@@ -1,4 +1,24 @@
-### CDN Suggesto
+# CDN Suggesto
+
+## cdn amazon (preferibile)
+
+### JS ultima versione
+
+https://d2m98g73xnllun.cloudfront.net/main/common/js/suggesto.js
+
+### Versione 1.0
+
+https://d2m98g73xnllun.cloudfront.net/1.0/common/js/suggesto.js
+
+### developer
+
+https://raw.githubusercontent.com/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
+
+### invalidation
+
+usare tool amazon cloud front
+
+## CDN JSDELIR (funziona anche)
 
 
 ## JS ultima versione
