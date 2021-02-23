@@ -1,4 +1,4 @@
-/* ver 1.7 */
+/* ver 1.8 */
 function initCircNavVueApp(divApp,myPortletId,myPortletNamespace,jsonParams,endPoint,pageSize) {
     console.log(jsonParams +"test");
 
