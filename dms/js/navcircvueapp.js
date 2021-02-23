@@ -1,6 +1,6 @@
-/* ver 1.6 */
+/* ver 1.7 */
 function initCircNavVueApp(divApp,myPortletId,myPortletNamespace,jsonParams,endPoint,pageSize) {
-    console.log(jsonParams);
+    console.log(jsonParams +"test");
 
     
     var CircNavVueApp = new Vue({
