@@ -6,11 +6,12 @@
 
 https://d2m98g73xnllun.cloudfront.net/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
 
+(latenza circa 5 minuti)
 ### Versione 1.0
 
 https://d2m98g73xnllun.cloudfront.net/ECTRLSOLUTIONS/d40cdn/1.0/common/js/suggesto.js
 
-
+(latenza circa 5 minuti)
 
 ### developer
 
@@ -27,6 +28,7 @@ https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/adriano/common/js/su
 
 una volta soddisfatti dello sviluppo, si fa commit e si imposta la versione cnd.
 
+latenza 0
 
 ### invalidation
 
@@ -44,7 +46,7 @@ ha una cache di 5 minuti
 https://cdngit.d40.it/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
 
 
-
+latenza 5 minuti
 
 ## CDN JSDELIR (funziona ma da preferire la soluzione amazon sopra)
 
