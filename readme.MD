@@ -10,6 +10,11 @@ https://cdn.jsdelivr.net/gh/ECTRLSOLUTIONS/d40cdn@1.0/common/js/suggesto.js
 ## ... per lo sviluppo occorre utilizzare la versione raw di github:
 https://raw.githubusercontent.com/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
 
+... problema CORS, possiamo mettere un piccolo server node per lo sviluppo (vedi proxy.js)
+
+http://localhost:8000/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
+
+
 ## Ulteriori informazioni su jsdelivr
 https://github.com/jsdelivr/jsdelivr
 
