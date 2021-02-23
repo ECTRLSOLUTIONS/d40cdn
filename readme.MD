@@ -1,4 +1,4 @@
-# CDN Suggesto
+# CDN  Suggesto
 
 ## cdn amazon 
 
@@ -10,13 +10,38 @@ https://d2m98g73xnllun.cloudfront.net/ECTRLSOLUTIONS/d40cdn/main/common/js/sugge
 
 https://d2m98g73xnllun.cloudfront.net/ECTRLSOLUTIONS/d40cdn/1.0/common/js/suggesto.js
 
+
+
 ### developer
 
-https://cdngit.d40.it/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
+usare una cartella dedicata s3 per ogni sviluppatore.
+Ad esempio per adriano:
+
+aws s3 sync ./common s3://mkspresstage.suggesto.eu/adriano/common
+aws s3 sync ./dms s3://mkspresstage.suggesto.eu/adriano/dms
+
+che consente di ottenere il link:
+
+https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/adriano/common/js/suggesto.js
+
+una volta soddisfatti dello sviluppo, si fa commit e si imposta la versione cnd.
+
 
 ### invalidation
 
 usare tool amazon cloud front
+
+
+## file su github:
+
+https://raw.githubusercontent.com/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
+
+ha una cache di 5 minuti
+
+## file su nostro proxy:
+
+https://cdngit.d40.it/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
+
 
 
 
