@@ -18,6 +18,7 @@ usare una cartella dedicata s3 per ogni sviluppatore.
 Ad esempio per adriano:
 
 aws s3 sync ./common s3://mkspresstage.suggesto.eu/adriano/common
+
 aws s3 sync ./dms s3://mkspresstage.suggesto.eu/adriano/dms
 
 che consente di ottenere il link:
