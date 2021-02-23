@@ -1,4 +1,6 @@
-### CDN Suggesto
+# CDN Suggesto
+
+## CDN JSDELIR
 
 
 ## JS ultima versione
@@ -7,7 +9,7 @@ https://cdn.jsdelivr.net/gh/ECTRLSOLUTIONS/d40cdn/common/js/suggesto.js
 ## Versione 1.0
 https://cdn.jsdelivr.net/gh/ECTRLSOLUTIONS/d40cdn@1.0/common/js/suggesto.js
 
-## ... per lo sviluppo occorre utilizzare la versione raw di github:
+## ... per lo sviluppo occorre utilizzare la versione raw di github (non funziona per CORS):
 https://raw.githubusercontent.com/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
 
 ... problema CORS, possiamo mettere un piccolo server node per lo sviluppo (vedi proxy.js)
@@ -25,3 +27,23 @@ ma non sembrano adatte per lo sviluppo, ma piuttosto se occorre aggiornare una p
 jsDelivr has an easy to use API to purge files from the cache and force the files to update. 
 This is useful when you release a new version and want to force the update of all version aliased users.
 To avoid abuse, access to purge is given after an email request (for now - dak@prospectone.io).
+
+
+
+## cdn amazon (non funziona per CORS)
+
+### JS ultima versione
+
+https://d2m98g73xnllun.cloudfront.net/main/common/js/suggesto.js
+
+### Versione 1.0
+
+https://d2m98g73xnllun.cloudfront.net/1.0/common/js/suggesto.js
+
+### developer
+
+https://raw.githubusercontent.com/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
+
+### invalidation
+
+usare tool amazon cloud front
