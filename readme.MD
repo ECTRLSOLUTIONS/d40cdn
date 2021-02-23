@@ -20,7 +20,7 @@ usare tool amazon cloud front
 
 
 
-## CDN JSDELIR
+## CDN JSDELIR (funziona ma da preferire la soluzione amazon sopra)
 
 
 ## JS ultima versione
