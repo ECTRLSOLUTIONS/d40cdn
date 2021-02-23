@@ -1,5 +1,25 @@
 # CDN Suggesto
 
+## cdn amazon 
+
+### JS ultima versione
+
+https://d2m98g73xnllun.cloudfront.net/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
+
+### Versione 1.0
+
+https://d2m98g73xnllun.cloudfront.net/ECTRLSOLUTIONS/d40cdn/1.0/common/js/suggesto.js
+
+### developer
+
+https://cdngit.d40.it/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
+
+### invalidation
+
+usare tool amazon cloud front
+
+
+
 ## CDN JSDELIR
 
 
@@ -36,20 +56,3 @@ To avoid abuse, access to purge is given after an email request (for now - dak@p
 
 
 
-## cdn amazon (non funziona per CORS)
-
-### JS ultima versione
-
-https://d2m98g73xnllun.cloudfront.net/main/common/js/suggesto.js
-
-### Versione 1.0
-
-https://d2m98g73xnllun.cloudfront.net/1.0/common/js/suggesto.js
-
-### developer
-
-https://raw.githubusercontent.com/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
-
-### invalidation
-
-usare tool amazon cloud front
