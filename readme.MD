@@ -17,6 +17,12 @@ https://raw.githubusercontent.com/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.
 http://localhost:8000/ECTRLSOLUTIONS/d40cdn/main/common/js/suggesto.js
 
 
+Esempio  con CDN
+
+[CloudFront] <-- [ServerNode Cross Origin] <-- [GitHub RAW]
+
+
+
 ## Ulteriori informazioni su jsdelivr
 https://github.com/jsdelivr/jsdelivr
 
