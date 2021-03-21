@@ -266,9 +266,8 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                     query: this.jsonParams
                 }).catch(function(err){});
                 
-                this.jsonParams.num = this.filterConfig.maxItemInMap;
-                url = this.filterConfig.endPoint + JSON.stringify(this.jsonParams);
                 this.jsonParams.num = this.filterConfig.pageSize;
+                url = this.filterConfig.endPoint + JSON.stringify(this.jsonParams);
     
                 axios.get(
                     url

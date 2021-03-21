@@ -26,7 +26,7 @@ che consente di ottenere il link:
 
 https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/adriano/common/js/suggesto.js
 
-una volta soddisfatti dello sviluppo, si fa commit e si imposta la versione cnd.
+una volta soddisfatti dello sviluppo, si fa commit e si imposta la versione cdn.
 
 latenza 0
 
