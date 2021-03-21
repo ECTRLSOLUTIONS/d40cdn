@@ -6,8 +6,6 @@
 
     DEBUG
     Freemarker online: http://freemarker-online.kenshoo.com/
-  esempio:
-https://editor.d40.it/web/d40owner-demo-developer/navigazione-circolare?p_p_id=D40Configurable_INSTANCE_zRhjI6KGnO0Z&p_p_lifecycle=2&p_p_resource_id=json&_D40Configurable_INSTANCE_zRhjI6KGnO0Z_jsonParams=%7B%7D
  
   -->
 
