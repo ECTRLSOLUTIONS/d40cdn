@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="76.098" height="91.203" viewBox="0 0 76.098 91.203">
+  <defs>
+    <filter id="Tracciato_7495" x="0" y="0" width="76.098" height="91.203" filterUnits="userSpaceOnUse">
+      <feOffset dy="5" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Raggruppa_1047" data-name="Raggruppa 1047" transform="translate(-724.307 -681.117)">
+    <g id="Raggruppa_197" data-name="Raggruppa 197" transform="translate(733.307 685.117)">
+      <path id="Tracciato_7494" data-name="Tracciato 7494" d="M504.114,624.61a27.886,27.886,0,0,1-2.374,2.721Z" transform="translate(-452.052 -577.841)" fill="#fff"/>
+      <g transform="matrix(1, 0, 0, 1, -9, -4)" filter="url(#Tracciato_7495)">
+        <path id="Tracciato_7495-2" data-name="Tracciato 7495" d="M489.708,587.649a28.926,28.926,0,0,1-5.533,17.054c-.163.227-.326.446-.5.666l-2.374,2.721L460.6,631.8l-22.042-24.975.276-.014a29.049,29.049,0,1,1,50.878-19.165Z" transform="translate(-422.61 -554.6)" fill="#fff"/>
+      </g>
+      <path id="Tracciato_7496" data-name="Tracciato 7496" d="M505.678,623.66l-.588.673c.177-.22.34-.439.5-.666Z" transform="translate(-453.029 -577.564)" fill="#fff"/>
+    </g>
+    <path id="Tracciato_29291" data-name="Tracciato 29291" d="M18.426,0A18.426,18.426,0,1,1,0,18.426,18.426,18.426,0,0,1,18.426,0Z" transform="translate(744.284 696.127)" fill="#15cceb"/>
+    <text id="_2" data-name="2" transform="translate(762 722)" fill="#fff" font-size="22" font-family="Helvetica"><tspan x="-6.118" y="0">2</tspan></text>
+  </g>
+</svg>

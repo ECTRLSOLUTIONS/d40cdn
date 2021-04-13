@@ -1,0 +1,30 @@
+#mapid {
+    height: 100vh;
+}
+
+.l-box {
+    padding-left: 1.5em;
+}
+
+.l-boxh3 {
+    margin-block-start: 0;
+    margin-block-end: 0;
+    color: #15cceb;
+}
+
+.l-boxp {
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+}
+
+.pure-button-primary,
+.pure-button-selected,
+a.pure-button-primary,
+a.pure-button-selected {
+    background-color: #15cceb !important;
+    color: #fff;
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 0 !important;
+}
