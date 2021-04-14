@@ -6,12 +6,14 @@
     <title>Suggesto Map Demo</title>
     <link rel="stylesheet" href="libs/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="libs/suggestomap.css" crossorigin="" />
-    <script src="libs/leaflet.js" crossorigin=""></script>
-    <script src="libs/leaflet-omnivore.min.js" crossorigin=""></script>
     <link rel="stylesheet" href="libs/pure-min.css">
     <link rel="stylesheet" href="libs/grids-responsive-min.css">
 
-    
+    <link rel="stylesheet" href="libs/leaflet-gesture-handling.min.css">
+
+    <script src="libs/leaflet.js" crossorigin=""></script>
+    <script src="libs/leaflet-omnivore.min.js" crossorigin=""></script>
+    <script src="libs/leaflet-gesture-handling.min.js" crossorigin=""></script>
 
     <link rel="icon" href="favicon.ico">
     <meta charset="UTF-8" />
@@ -27,13 +29,22 @@
         }
 
         .mapsize {
-            height: 50vh;
+            height: 80vh;
             width: 100%;
         }
     </style>
 
     <div class="mapsize" id="mapid1"></div>
-    <div class="mapsize" id="mapid2"></div>
+    <form class="pure-form">
+        <fieldset>
+            <legend>Filtro Gruppo (*, 1.*, 1.1.*)</legend>
+            <input type="text" placeholder="Filtro Gruppo" id="groupFilter" value="*"/>
+        </fieldset>
+    </form>
+    <!--div class="mapsize" id="mapid2"></div -->
+    <div onclick="hideAll();" class="pure-button">Hide All</div>
+    <div onclick="showAll();" class="pure-button">Show All</div>
+    <div onclick="showFilteredMarkers();" class="pure-button">Show Filtered</div>
 
     <script src="libs/suggestoicondata.js"></script>
     <script src="libs/suggestomap.js"></script>
@@ -43,17 +54,34 @@
             tilelayer: 'osm',
             mapcenter: [45.5668237, 8.0661697],
             zoom: 13,
+            markersFilter: '*',
             markers: [
-                { "latlng": [45.557093, 8.069115], "value": "1", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.552645, 8.059158], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.541862, 8.064284], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.554208, 7.987404], "value": "2", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.551434, 8.003573], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.545904, 7.997737], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.544943, 8.007693], "value": "C", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.596892, 8.042664], "value": "3", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.586632, 8.037181], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.587232, 8.050742], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+                // Percorso 1 (3 tappe)
+                { "group":"1","latlng": [45.567669, 8.030663], "value": "P", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
+
+                { "group":"1.1","latlng": [45.557093, 8.069115], "value": "1", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
+                { "group":"1.1.1","level":"3","latlng": [45.552645, 8.059158], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+                { "group":"1.1.1","level":"3","latlng": [45.541862, 8.064284], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+
+                { "group":"1.2","level":"2","latlng": [45.554208, 7.987404], "value": "2", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
+                { "group":"1.2.1","level":"3","latlng": [45.551434, 8.003573], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+                { "group":"1.2.1","level":"3","latlng": [45.545904, 7.997737], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+
+                { "group":"1.3","subgroup":"1.3.1","latlng": [45.596892, 8.042664], "value": "3", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
+                { "group":"1.3.1","subgroup":"","latlng": [45.586632, 8.037181], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+                { "group":"1.3.1","subgroup":"","latlng": [45.587232, 8.050742], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+
+                // Percorso 2 (2 tappe)
+                { "group":"2","latlng": [45.587313, 7.967323], "value": "P", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
+
+                { "group":"2.1","latlng": [45.575166, 7.951924], "value": "1", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
+                { "group":"2.1.1","latlng": [45.569878, 7.934758], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+                { "group":"2.1.1","latlng": [45.554689, 7.956161], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+
+                { "group":"2.2","latlng": [45.593861, 7.924919], "value": "2", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
+                { "group":"2.2.1","latlng": [45.608994, 7.923889], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+                { "group":"2.2.1","latlng": [45.595062, 7.909126], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
+
             ],
             layers: [
                 { "id": "1", "type": "kmlurl", "value": "data/demo2.kml" },
@@ -65,26 +93,20 @@
             ]
         };
 
-        var jsonData2 = {
-            tilelayer: 'Esri_WorldImagery',
-            mapcenter: [45.5668237, 8.0661697],
-            zoom: 13,
-            markers: [
-                { "latlng": [45.557093, 8.069115], "value": "1", "type": "svgNumIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.552645, 8.059158], "value": "A", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
-                { "latlng": [45.541862, 8.064284], "value": "B", "type": "svgTxtIcon", "size": 50, "html": htmlDemo },
-            ],
-            layers: [
-                { "id": "1", "type": "kmlurl", "value": "data/tabia.kml" },
-            ]
-        };
-
         var sm1 = new SuggestoMap('mapid1');
         sm1.sm.createMap(jsonData1);
 
+        function hideAll() {
+            sm1.sm.hideAll('2.2');
+        }
+        function showAll() {
+            sm1.sm.hideAll('2.2');
+        }
 
-        var sm2 = new SuggestoMap('mapid2');
-        sm2.sm.createMap(jsonData2);
+        function showFilteredMarkers() {
+            var filterValue = document.getElementById("groupFilter").value;
+            sm1.sm.showFilteredMarkers(filterValue);
+        }
 
     </script>
 </body>
