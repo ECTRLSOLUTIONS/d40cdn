@@ -84,24 +84,17 @@
 
             ],
             layers: [
-                { "id": "1", "type": "kmlurl", "value": "data/demo2.kml" },
-                { "id": "2", "type": "kml", "value": "" },
-                { "id": "3", "type": "gpxurl", "value": "data/demo3.gpx" },
-                { "id": "4", "type": "gpx", "value": "" },
-                { "id": "3", "type": "geojsonurl", "value": "data/demo1.geojson" },
-                { "id": "4", "type": "geojson", "value": "" },
+                { "id": "1", "group":"1", "type": "kmlurl", "value": "data/demo2.kml" },
+                { "id": "2", "group":"1", "type": "kml", "value": "" },
+                { "id": "3", "group":"2", "type": "gpxurl", "value": "data/demo3.gpx" },
+                { "id": "4", "group":"2", "type": "gpx", "value": "" },
+                { "id": "3", "group":"2", "type": "geojsonurl", "value": "data/demo1.geojson" },
+                { "id": "4", "group":"2", "type": "geojson", "value": "" },
             ]
         };
 
         var sm1 = new SuggestoMap('mapid1');
         sm1.sm.createMap(jsonData1);
-
-        function hideAll() {
-            sm1.sm.hideAll('2.2');
-        }
-        function showAll() {
-            sm1.sm.hideAll('2.2');
-        }
 
         function showFilteredMarkers() {
             var filterValue = document.getElementById("groupFilter").value;
