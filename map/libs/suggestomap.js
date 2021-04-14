@@ -6,7 +6,7 @@ function SuggestoMap(mapid) {
 		mlist: [],
 		createMap: function (jsonData) {
 			var that = this;
-			this.lmap = L.map(mapid, {gestureHandling: true}).setView(jsonData.mapcenter, jsonData.zoom);
+			this.lmap = L.map(mapid, { gestureHandling: true }).setView(jsonData.mapcenter, jsonData.zoom);
 
 			/*if (jsonData.tilelayer == 'Esri_WorldImagery') {
 				this.tileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -38,6 +38,21 @@ function SuggestoMap(mapid) {
 				accessToken: 'pk.eyJ1IjoiZGFyaW9jYXZhZGEiLCJhIjoiY2s4OXlrMWx3MGJmazNscW16Mm5xOGM5NCJ9.zQ-hBwzOvuVCGH0x7mHJdg'
 			})
 
+			var tileLayer4 = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 22,
+				id: 'mapbox/satellite-streets-v11',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'pk.eyJ1IjoiZGFyaW9jYXZhZGEiLCJhIjoiY2s4OXlrMWx3MGJmazNscW16Mm5xOGM5NCJ9.zQ-hBwzOvuVCGH0x7mHJdg'
+			})
+
+			var googleTerrain = L.tileLayer('https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+				maxZoom: 20,
+				subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+			});
+
+
 			// MapBox
 			// pk.eyJ1IjoiZGFyaW9jYXZhZGEiLCJhIjoiY2s4OXlrMWx3MGJmazNscW16Mm5xOGM5NCJ9.zQ-hBwzOvuVCGH0x7mHJdg
 
@@ -45,7 +60,9 @@ function SuggestoMap(mapid) {
 			var baseLayers = {
 				"Open Street Map": tileLayer1,
 				"World Imagery": tileLayer2,
-				"Map Box": tileLayer3
+				"Map Box Outdoor": tileLayer3,
+				"Map Box Satellite": tileLayer4,
+				"Google Terrain": googleTerrain
 			};
 
 			L.control.layers(baseLayers).addTo(this.lmap);
@@ -91,7 +108,7 @@ function SuggestoMap(mapid) {
 
 
 			this.lmap.on('click', that.onMapClick);
-			
+
 			this.lmap.fitBounds(this.getMarkersLatLngArray());
 
 		},
