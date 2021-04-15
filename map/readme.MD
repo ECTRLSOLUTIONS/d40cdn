@@ -1,8 +1,10 @@
 ## Suggesto Map
 
-In jsonData aggiunto tilelayers, array con elenco dei layers selezionabili, 
-ordinati come sono nell'array. Il parametro tilelayer contiene il layer che appare di default al caricamento
-della mappa. Se esiste un solo valore nell'array tilelayers, non viene mostrata l'icona di selezione layers (in alto a destra)
+In jsonData aggiunto `tilelayers`, array con elenco dei layers selezionabili, 
+ordinati come sono nell'array. 
+Il parametro `tilelayer` contiene il layer che appare di default al caricamento
+della mappa. 
+Se esiste un solo valore nell'array tilelayers, non viene mostrata l'icona di selezione layers (in alto a destra)
 
 ``` json
 var jsonData1 = {
@@ -20,7 +22,7 @@ Per ogni marker:
 { "group":"2","latlng": [45.587313, 7.967323], "value": "P", "type": "svgNumIcon", "size": 50,"color": "#FF0000",  "html": "Popup html" },
 ```
 
-Se si chiama una seconda volta create map, vengono rimossi tutti i marker/percorsi e ricaricati in modo corretto
+Se si chiama una seconda volta il metodo `createMap`, vengono rimossi tutti i marker/percorsi e ricaricati in modo corretto.
 
 Aggiunto il parametro `gestureHandling: true,` se omesso il valore di default è `true`
 
