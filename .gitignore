@@ -1,0 +1,6 @@
+.eslintrc
+.prettierrc
+.prettierignore
+.package.json
+.package-lock.json
+s3sync-*.bat
