@@ -104,6 +104,11 @@ var firefoxIcon = L.icon({
 	iconSize: [80, 80], // size of the icon
 });
 
+function onMapClick(e) {
+    alert("You clicked the map at " + e.latlng);
+}
+
+mymap.on('click', onMapClick);
 
 const size = 50;
 const iconOptions = {
