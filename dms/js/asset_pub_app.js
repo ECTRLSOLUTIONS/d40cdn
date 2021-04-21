@@ -310,6 +310,11 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                     }
     
                     that.loading = false;
+                    if(typeof that.filterConfig.dataReady!=="undefined") {
+                        Vue.nextTick(function () {
+                            that.filterConfig.dataReady();
+                        })
+                    }
                 }).catch(function(e){
                     console.log("error here: ", e);
                     that.totalItems = 0;
@@ -500,7 +505,7 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                     e.currentTarget.querySelector('.fas').classList.toggle("fa-minus");
                 }
             },
-            getPrefix: function(image, w, h){
+            getPrefixOld: function(image, w, h){
                 var prefix = "",
                     imgCdn = "https://d28r45jypu6nt9.cloudfront.net/o/d40/img/",
                     siteUrl = "${themeDisplay.getURLPortal()?replace('://', '.')}";
@@ -527,6 +532,27 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                 
                 return prefix + image;
             },
+            getPrefix: function (image, w, h) {
+                var prefix = "",
+                    imgCdn = "https://d28r45jypu6nt9.cloudfront.net/o/d40/img/",
+                    siteUrl = window.location.origin.replace("://", ".");
+    
+                if (imgCdn !== "") {
+                    if (_.startsWith(image, "http") || image == "/documentsundefined") {
+                        if (image == "/documentsundefined") {
+                            image = "https://via.placeholder.com/450x300?text=Anteprima";
+                        }
+                    } else {
+                        if (typeof h === "string") {
+                            prefix = imgCdn + "w_" + w + "/" + siteUrl;
+                        } else {
+                            prefix = imgCdn + "w_" + w + ",h_" + h + "/" + siteUrl;
+                        }
+                    }
+                }
+    
+                return prefix + image;
+            },            
             sendToAccess: function(){
                 window.location.href = window.location.origin + "/login";
             }
