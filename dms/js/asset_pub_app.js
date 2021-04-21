@@ -505,33 +505,6 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                     e.currentTarget.querySelector('.fas').classList.toggle("fa-minus");
                 }
             },
-            getPrefixOld: function(image, w, h){
-                var prefix = "",
-                    imgCdn = "https://d28r45jypu6nt9.cloudfront.net/o/d40/img/",
-                    siteUrl = "${themeDisplay.getURLPortal()?replace('://', '.')}";
-                
-                if(imgCdn !== ""){
-                    var baseUrl = imgCdn,
-                        width = w,
-                        height = h;
-                    
-                    if(_.startsWith(image, "http") || image == "/documentsundefined"){
-                        prefix = "";
-                        
-                        if(image == "/documentsundefined"){
-                            image = "https://via.placeholder.com/450x300?text=Anteprima";
-                        }
-                    }else{
-                        if(typeof(h) === "string"){
-                            prefix = baseUrl + "w_" + width + "/" + siteUrl;
-                        }else{
-                            prefix = baseUrl + "w_" + width + ",h_" + height + "/" + siteUrl;
-                        }
-                    }
-                }
-                
-                return prefix + image;
-            },
             getPrefix: function (image, w, h) {
                 var prefix = "",
                     imgCdn = "https://d28r45jypu6nt9.cloudfront.net/o/d40/img/",
