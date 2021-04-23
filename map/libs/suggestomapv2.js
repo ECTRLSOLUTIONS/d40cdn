@@ -10,6 +10,7 @@ function SuggestoMap(mapid) {
 		tileLayer: null,
 		mlist: [],
 		llist: [],
+		mcluster: null,
 		tlayers: {
 			'osm': {
 				layer: null,
@@ -110,12 +111,19 @@ function SuggestoMap(mapid) {
 				defaultTileLayer.layer.addTo(vm.lmap);
 			}
 
+			// Cluster 
+			if (vm.mcluster == null) {
+				vm.mcluster = L.markerClusterGroup();
+				vm.lmap.addLayer(vm.mcluster);
+			}
+
 			// Markers ---
 
 			if (vm.mlist.length > 0) {
 				for (var i = 0; i < vm.mlist.length; i++) {
-					vm.mlist[i].marker.removeFrom(vm.lmap);
-					vm.mlist[i].marker = null;
+					//*** MODI
+					//vm.mlist[i].marker.removeFrom(vm.lmap);
+					//vm.mlist[i].marker = null;
 				}
 				vm.mlist = [];
 			}
@@ -200,7 +208,9 @@ function SuggestoMap(mapid) {
 		hideAll(group) {
 			var vm = this;
 			for (var i = 0; i < vm.mlist.length; i++) {
-				vm.mlist[i].marker.removeFrom(vm.lmap)
+				//***MODI */
+				//vm.mlist[i].marker.removeFrom(vm.lmap)
+				vm.mcluster.removeLayer(vm.mlist[i].marker);
 			}
 		},
 		hideGroup(group) {
@@ -208,14 +218,18 @@ function SuggestoMap(mapid) {
 			for (var i = 0; i < vm.mlist.length; i++) {
 				var jsm = vm.mlist[i].json;
 				if (jsm.group == group) {
-					vm.mlist[i].marker.removeFrom(vm.lmap)
+					//***MODI */
+					//vm.mlist[i].marker.removeFrom(vm.lmap)
+					vm.mcluster.removeLayer(vm.mlist[i].marker);
 				}
 			}
 		},
 		showAll(group) {
 			var vm = this;
 			for (var i = 0; i < vm.mlist.length; i++) {
-				vm.mlist[i].marker.addTo(vm.lmap)
+				//***MODI */
+				//vm.mlist[i].marker.addTo(vm.lmap)
+				vm.mcluster.addLayer(vm.mlist[i].marker);
 			}
 		},
 		showGroup(group) {
@@ -223,7 +237,9 @@ function SuggestoMap(mapid) {
 			for (var i = 0; i < vm.mlist.length; i++) {
 				var jsm = vm.mlist[i].json;
 				if (jsm.group == group) {
-					vm.mlist[i].marker.addTo(vm.lmap)
+					//***MODI */
+					//vm.mlist[i].marker.addTo(vm.lmap)
+					vm.mcluster.addLayer(vm.mlist[i].marker);
 				}
 			}
 		},
@@ -268,9 +284,13 @@ function SuggestoMap(mapid) {
 				console.log("showFilteredMarkers ", filter,  i, fa.length, fg.length, show)
 
 				if (show) {
-					vm.mlist[i].marker.addTo(vm.lmap)
+					//***MODI */
+					// vm.mlist[i].marker.addTo(vm.lmap)
+					vm.mcluster.addLayer(vm.mlist[i].marker);
 				} else {
-					vm.mlist[i].marker.removeFrom(vm.lmap)
+					//***MODI */
+					// vm.mlist[i].marker.removeFrom(vm.lmap)
+					vm.mcluster.removeLayer(vm.mlist[i].marker);
 				}
 			}
 		},
@@ -322,8 +342,14 @@ function SuggestoMap(mapid) {
 	}
 }
 
+/*
 
 
+var markers = L.markerClusterGroup();
+var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title });
+markers.addLayer(marker);
+map.addLayer(markers);
+*/
 
 
 
