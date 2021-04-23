@@ -2,6 +2,7 @@
 /*
  v1.3
  data: 22/04/2021
+ https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/libs/suggestomapv2.js
 */
 function SuggestoMap(mapid) {
 	this.sm = {
@@ -113,7 +114,11 @@ function SuggestoMap(mapid) {
 
 			// Cluster 
 			if (vm.mcluster == null) {
-				vm.mcluster = L.markerClusterGroup();
+				vm.mcluster = L.markerClusterGroup(
+					{
+					maxClusterRadius: 10
+					}
+				);
 				vm.lmap.addLayer(vm.mcluster);
 			}
 
@@ -271,12 +276,12 @@ function SuggestoMap(mapid) {
 				/* Caso particolare */
 				if (fg.length == 2) {
 					if (fg[0] == fa[0]) {
-//						show = true;
+						show = true;
 					}
 				}
 
 				if (fg.length == 1) {
-					//show = true;
+					show = true;
 				}
 
 				if (show) {

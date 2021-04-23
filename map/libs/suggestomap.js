@@ -257,12 +257,12 @@ function SuggestoMap(mapid) {
 				/* Caso particolare */
 				if (fg.length == 2) {
 					if (fg[0] == fa[0]) {
-//						show = true;
+						show = true;
 					}
 				}
 
 				if (fg.length == 1) {
-					//show = true;
+					show = true;
 				}
 
 				console.log("showFilteredMarkers ", filter,  i, fa.length, fg.length, show)
