@@ -3,6 +3,12 @@
  v1.3
  data: 22/04/2021
  https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/libs/suggestomapv2.js
+
+
+Da capire se può funzionare il "Multiclaster gerarchico su più livelli"
+Altrimenti se possibile mettere il cluster solo sul 1° livello.
+
+
 */
 function SuggestoMap(mapid) {
 	this.sm = {
@@ -11,7 +17,7 @@ function SuggestoMap(mapid) {
 		tileLayer: null,
 		mlist: [],
 		llist: [],
-		mcluster: null,
+		mcluster: [],
 		tlayers: {
 			'osm': {
 				layer: null,
@@ -113,22 +119,19 @@ function SuggestoMap(mapid) {
 			}
 
 			// Cluster 
-			if (vm.mcluster == null) {
-				vm.mcluster = L.markerClusterGroup(
-					{
-					maxClusterRadius: 10
-					}
-				);
-				vm.lmap.addLayer(vm.mcluster);
+			if (vm.mcluster.length == 0) {
+				const clusteropt = {maxClusterRadius: 10};
+				for (i=0;i<4;i++) {
+					vm.mcluster[i] = L.markerClusterGroup(clusteropt);
+					vm.lmap.addLayer(vm.mcluster[i]);
+				}
+				
 			}
 
 			// Markers ---
-
 			if (vm.mlist.length > 0) {
 				for (var i = 0; i < vm.mlist.length; i++) {
-					//*** MODI
-					//vm.mlist[i].marker.removeFrom(vm.lmap);
-					//vm.mlist[i].marker = null;
+					vm.removeMarkerLayer(vm.mlist[i]);
 				}
 				vm.mlist = [];
 			}
@@ -211,9 +214,7 @@ function SuggestoMap(mapid) {
 		hideAll(group) {
 			var vm = this;
 			for (var i = 0; i < vm.mlist.length; i++) {
-				//***MODI */
-				//vm.mlist[i].marker.removeFrom(vm.lmap)
-				vm.mcluster.removeLayer(vm.mlist[i].marker);
+				vm.removeMarkerLayer(vm.mlist[i]);
 			}
 		},
 		hideGroup(group) {
@@ -221,18 +222,14 @@ function SuggestoMap(mapid) {
 			for (var i = 0; i < vm.mlist.length; i++) {
 				var jsm = vm.mlist[i].json;
 				if (jsm.group == group) {
-					//***MODI */
-					//vm.mlist[i].marker.removeFrom(vm.lmap)
-					vm.mcluster.removeLayer(vm.mlist[i].marker);
+					vm.removeMarkerLayer(vm.mlist[i]);
 				}
 			}
 		},
 		showAll(group) {
 			var vm = this;
 			for (var i = 0; i < vm.mlist.length; i++) {
-				//***MODI */
-				//vm.mlist[i].marker.addTo(vm.lmap)
-				vm.mcluster.addLayer(vm.mlist[i].marker);
+				vm.addMarkerLayer(vm.mlist[i]);
 			}
 		},
 		showGroup(group) {
@@ -240,9 +237,7 @@ function SuggestoMap(mapid) {
 			for (var i = 0; i < vm.mlist.length; i++) {
 				var jsm = vm.mlist[i].json;
 				if (jsm.group == group) {
-					//***MODI */
-					//vm.mlist[i].marker.addTo(vm.lmap)
-					vm.mcluster.addLayer(vm.mlist[i].marker);
+					vm.addMarkerLayer(vm.mlist[i]);
 				}
 			}
 		},
@@ -285,14 +280,38 @@ function SuggestoMap(mapid) {
 				}
 
 				if (show) {
-					//***MODI */
-					// vm.mlist[i].marker.addTo(vm.lmap)
-					vm.mcluster.addLayer(vm.mlist[i].marker);
+					vm.addMarkerLayer(vm.mlist[i]);
 				} else {
-					//***MODI */
-					// vm.mlist[i].marker.removeFrom(vm.lmap)
-					vm.mcluster.removeLayer(vm.mlist[i].marker);
+					vm.removeMarkerLayer(vm.mlist[i]);
 				}
+			}
+		},
+		addMarkerLayer(obj) {
+			var vm = this;
+			var i = 0;
+			try {
+				i = obj.json.group.split('.').length-1;
+			} catch (e){
+				console.log('Error addMarkerLayer: invalid group', JSON.stringify(obj.json, null, 2))
+			}
+			try {
+				vm.mcluster[i].addLayer(obj.marker);	
+			} catch (e){
+				console.log('Error addMarkerLayer: invalid cluster', i, JSON.stringify(obj.json, null, 2))
+			}
+		},
+		removeMarkerLayer(obj) {
+			var vm = this;
+			var i = 0;
+			try {
+				i = obj.json.group.split('.').length-1;
+			} catch (e){
+				console.log('Error removeMarkerLayer: invalid group', JSON.stringify(obj.json, null, 2))
+			}
+			try {
+				vm.mcluster[i].removeLayer(obj.marker);	
+			} catch (e){
+				console.log('Error removeMarkerLayer: invalid cluster', i, JSON.stringify(obj.json, null, 2))
 			}
 		},
 		showFilteredLayers(filter) {
@@ -342,15 +361,6 @@ function SuggestoMap(mapid) {
 		}
 	}
 }
-
-/*
-
-
-var markers = L.markerClusterGroup();
-var marker = L.marker(new L.LatLng(a[0], a[1]), { title: title });
-markers.addLayer(marker);
-map.addLayer(markers);
-*/
 
 
 
