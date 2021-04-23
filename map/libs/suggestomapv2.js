@@ -130,7 +130,6 @@ function SuggestoMap(mapid) {
 
 			for (var i = 0; i < jsonData.markers.length; i++) {
 				var jsonMarker = jsonData.markers[i];
-				console.log(jsonMarker)
 				const svgIcon = L.divIcon(getSuggestoIconOptions(jsonMarker.type, jsonMarker.value, jsonMarker.size, jsonMarker['color']));
 				const aMarker = L.marker(jsonMarker.latlng, { icon: svgIcon });
 				if (jsonMarker.html !== '') {
@@ -145,7 +144,6 @@ function SuggestoMap(mapid) {
 						
 					}
 				});
-				//aMarker.on('mouseover', function (e) { console.log('mouseover', e.sourceTarget.customdata) });
 				vm.mlist.push({ json: jsonMarker, marker: aMarker });
 			}
 
@@ -280,8 +278,6 @@ function SuggestoMap(mapid) {
 				if (fg.length == 1) {
 					//show = true;
 				}
-
-				console.log("showFilteredMarkers ", filter,  i, fa.length, fg.length, show)
 
 				if (show) {
 					//***MODI */
