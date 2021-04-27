@@ -7,9 +7,13 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
     Vue.filter("money", function(value){
         return parseFloat(value).toFixed(2);
     });
-    
+    var mode="history";
+    if(filterConfig.routerMode) {
+        mode=routerMode;
+    }
     var routes = [], router = new VueRouter({
-        routes: routes
+        routes: routes,
+        mode:mode
     });
     
     var filterSearch = new Vue({
@@ -260,12 +264,12 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                     
                     this.jsonParams[this.filterConfig.filterGroup[i].paramName] = value;
                 }
-    
-                router.push({
-                    path: '',
-                    query: this.jsonParams
-                }).catch(function(err){});
-                
+                if(this.filterConfig.routerEnabled) {
+                    router.push({
+                        path: '',
+                        query: this.jsonParams
+                    }).catch(function(err){});
+                }
                 this.jsonParams.num = this.filterConfig.pageSize;
                 url = this.filterConfig.endPoint + JSON.stringify(this.jsonParams);
     
