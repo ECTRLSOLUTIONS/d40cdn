@@ -112,7 +112,7 @@ function initCircNavVueApp(divApp,myPortletId,myPortletNamespace,jsonParams,endP
                     siteUrl = window.location.origin.replace("://", ".");
     
                 if (imgCdn !== "") {
-                    if (_.startsWith(image, "http") || image == "/documentsundefined") {
+                    if (image.startsWith("http") || image == "/documentsundefined") {
                         if (image == "/documentsundefined") {
                             image = "https://via.placeholder.com/450x300?text=Anteprima";
                         }
