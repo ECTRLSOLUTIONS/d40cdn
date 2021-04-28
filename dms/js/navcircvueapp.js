@@ -106,33 +106,27 @@ function initCircNavVueApp(divApp,myPortletId,myPortletNamespace,jsonParams,endP
                     that.toastText = "";
                 }, 3000);
             },
-            getPrefix: function(image, w, h){
+            getPrefix: function (image, w, h) {
                 var prefix = "",
                     imgCdn = "https://d28r45jypu6nt9.cloudfront.net/o/d40/img/",
-                    siteUrl = "${themeDisplay.getURLPortal()?replace('://', '.')}";
-                
-                if(imgCdn !== ""){
-                    var baseUrl = imgCdn,
-                        width = w,
-                        height = h;
-                    
-                    if(_.startsWith(image, "http") || image == "/documentsundefined"){
-                        prefix = "";
-                        
-                        if(image == "/documentsundefined"){
+                    siteUrl = window.location.origin.replace("://", ".");
+    
+                if (imgCdn !== "") {
+                    if (_.startsWith(image, "http") || image == "/documentsundefined") {
+                        if (image == "/documentsundefined") {
                             image = "https://via.placeholder.com/450x300?text=Anteprima";
                         }
-                    }else{
-                        if(typeof(h) === "string"){
-                            prefix = baseUrl + "w_" + width + "/" + siteUrl;
-                        }else{
-                            prefix = baseUrl + "w_" + width + ",h_" + height + "/" + siteUrl;
+                    } else {
+                        if (typeof h === "string") {
+                            prefix = imgCdn + "w_" + w + "/" + siteUrl;
+                        } else {
+                            prefix = imgCdn + "w_" + w + ",h_" + h + "/" + siteUrl;
                         }
                     }
                 }
-                
+    
                 return prefix + image;
-            },
+            },            
             sendToAccess: function(){
                 window.location.href = window.location.origin + "/login";
             }
