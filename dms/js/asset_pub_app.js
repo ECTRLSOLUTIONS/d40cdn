@@ -7,9 +7,13 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
     Vue.filter("money", function(value){
         return parseFloat(value).toFixed(2);
     });
-    
+    var mode="history";
+    if(filterConfig.routerMode) {
+        mode=routerMode;
+    }
     var routes = [], router = new VueRouter({
-        routes: routes
+        routes: routes,
+        mode:mode
     });
     
     var filterSearch = new Vue({
@@ -260,12 +264,12 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                     
                     this.jsonParams[this.filterConfig.filterGroup[i].paramName] = value;
                 }
-    
-                router.push({
-                    path: '',
-                    query: this.jsonParams
-                }).catch(function(err){});
-                
+                if(this.filterConfig.routerEnabled) {
+                    router.push({
+                        path: '',
+                        query: this.jsonParams
+                    }).catch(function(err){});
+                }
                 this.jsonParams.num = this.filterConfig.pageSize;
                 url = this.filterConfig.endPoint + JSON.stringify(this.jsonParams);
     
@@ -310,6 +314,11 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                     }
     
                     that.loading = false;
+                    if(typeof that.filterConfig.dataReady!=="undefined") {
+                        Vue.nextTick(function () {
+                            that.filterConfig.dataReady();
+                        })
+                    }
                 }).catch(function(e){
                     console.log("error here: ", e);
                     that.totalItems = 0;
@@ -500,33 +509,27 @@ function initAssetPubApp(divApp,myPortletId,myPortletNamespace,filterConfig) {
                     e.currentTarget.querySelector('.fas').classList.toggle("fa-minus");
                 }
             },
-            getPrefix: function(image, w, h){
+            getPrefix: function (image, w, h) {
                 var prefix = "",
                     imgCdn = "https://d28r45jypu6nt9.cloudfront.net/o/d40/img/",
-                    siteUrl = "${themeDisplay.getURLPortal()?replace('://', '.')}";
-                
-                if(imgCdn !== ""){
-                    var baseUrl = imgCdn,
-                        width = w,
-                        height = h;
-                    
-                    if(_.startsWith(image, "http") || image == "/documentsundefined"){
-                        prefix = "";
-                        
-                        if(image == "/documentsundefined"){
+                    siteUrl = window.location.origin.replace("://", ".");
+    
+                if (imgCdn !== "") {
+                    if (_.startsWith(image, "http") || image == "/documentsundefined") {
+                        if (image == "/documentsundefined") {
                             image = "https://via.placeholder.com/450x300?text=Anteprima";
                         }
-                    }else{
-                        if(typeof(h) === "string"){
-                            prefix = baseUrl + "w_" + width + "/" + siteUrl;
-                        }else{
-                            prefix = baseUrl + "w_" + width + ",h_" + height + "/" + siteUrl;
+                    } else {
+                        if (typeof h === "string") {
+                            prefix = imgCdn + "w_" + w + "/" + siteUrl;
+                        } else {
+                            prefix = imgCdn + "w_" + w + ",h_" + h + "/" + siteUrl;
                         }
                     }
                 }
-                
+    
                 return prefix + image;
-            },
+            },            
             sendToAccess: function(){
                 window.location.href = window.location.origin + "/login";
             }

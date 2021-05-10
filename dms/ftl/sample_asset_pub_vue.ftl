@@ -74,9 +74,11 @@ USA IL jsonFeeds.ftl montato su una configurable alla pagina /jsonfeed
             <div v-for="(item, index) in docs" :key="item.id + '-' + index" class="card bg-dark text-white">
                 <img :src="item.contentJSON.previewPicture" class="card-img" :alt="item.contentJSON.title" style="max-height: 300px;">
                 <div class="card-img-overlay">
+                <a :href="item.contentJSON.viewUrl" class="btn tw-bg-green btn-sm tw-font-heading tw-rounded-lg text-white text-uppercase tw-py-3 px-4"> 
                     <h5 class="card-title">
                         <span class="badge badge-secondary">{{ item.contentJSON.title }}</span>
                     </h5>
+                </a>
                 </div>
             </div>
         </div>
