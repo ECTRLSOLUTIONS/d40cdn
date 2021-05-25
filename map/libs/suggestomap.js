@@ -1,11 +1,13 @@
 
 /*
- v1.3
+ v1.4
  data: 22/04/2021
+ update: 25/05/2021
 */
 function SuggestoMap(mapid) {
 	this.sm = {
-		version: '1.3',
+		version: '1.4',
+		fitBounds: true,
 		lmap: null,
 		tileLayer: null,
 		mlist: [],
@@ -34,6 +36,7 @@ function SuggestoMap(mapid) {
 		},
 		defaults: {
 			gestureHandling: true,
+			fitBounds: true,
 			layersFilter: '*',
 			markersFilter: '*',
 			tilelayer: 'osm',
@@ -42,10 +45,12 @@ function SuggestoMap(mapid) {
 		createMap: function (jsonData) {
 			var vm = this;
 			for (var attrname in vm.defaults) {
+				
 				if (typeof (jsonData[attrname]) !== 'undefined') {
 					vm.defaults[attrname] = jsonData[attrname];
-					vm.defaults[attrname] = jsonData[attrname];
 				};
+
+				console.log(attrname, vm.defaults[attrname])
 			}
 
 			if (vm.lmap == null) {
@@ -186,7 +191,12 @@ function SuggestoMap(mapid) {
 				vm.showFilteredLayers('*');
 			});
 
-			vm.lmap.fitBounds(vm.getMarkersLatLngArray());
+			if (vm.defaults.fitBounds == true) {
+				console.log('fitBounds')
+				vm.lmap.fitBounds(vm.getMarkersLatLngArray());
+			} else {
+				console.log('no fitBounds')
+			}
 
 		},
 		getMarkersLatLngArray() {
