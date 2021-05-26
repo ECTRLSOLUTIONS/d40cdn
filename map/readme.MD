@@ -1,5 +1,12 @@
 ## Suggesto Map
 
+## v1.4
+Per non sistemare la mappa in base ai marker in automatico:
+
+```fitBounds: false,```
+
+
+## 1.3
 In jsonData aggiunto `tilelayers`, array con elenco dei layers selezionabili, 
 ordinati come sono nell'array. 
 Il parametro `tilelayer` contiene il layer che appare di default al caricamento
