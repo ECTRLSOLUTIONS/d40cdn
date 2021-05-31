@@ -1,4 +1,4 @@
-function initVueADT(portletId, filterConfig, mixins = []) {
+function initVueADT(portletId, namespace = "", filterConfig, mixins = []) {
     new Vue({
         el: portletId,
         mixins: mixins,
@@ -10,17 +10,13 @@ function initVueADT(portletId, filterConfig, mixins = []) {
             loading: true,
             groupedCategories: [],
             filterConfig: filterConfig,
+            namespace: namespace,
         },
         created() {
-            this.log("Vue app created");
+            console.log("Vue ADT " + this.namespace + " created");
         },
         mounted() {
-            this.log("Vue app mounted");
-        },
-        methods: {
-            log: function (msg) {
-                console.log(msg);
-            },
+            console.log("Vue ADT " + this.namespace + " created");
         },
     });
 }

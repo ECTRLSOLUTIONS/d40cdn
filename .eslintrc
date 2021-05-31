@@ -13,6 +13,10 @@
     },
     "globals": {
         "_": "readonly",
+        "Vue": "readonly",
+        "VueRouter": "readonly",
+        "Liferay": "readonly",
+        "SuggestoMap": "readonly",
         "axios": "readonly"
     }
 }
