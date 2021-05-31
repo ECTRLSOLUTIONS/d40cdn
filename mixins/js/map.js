@@ -5,7 +5,6 @@ var d40_map = {
         map: {},
     },
     mounted() {
-        this.getNamespace();
         this.buildMap();
     },
     methods: {

@@ -1,4 +1,9 @@
 function initVueADT(portletId, namespace = "", filterConfig, mixins = []) {
+    console.log("portletId is " + portletId);
+    console.log("namespace is " + namespace);
+    console.log("filterConfig is ", filterConfig);
+    console.log("mixins are ", mixins);
+
     new Vue({
         el: portletId,
         mixins: mixins,

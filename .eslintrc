@@ -17,6 +17,7 @@
         "VueRouter": "readonly",
         "Liferay": "readonly",
         "SuggestoMap": "readonly",
-        "axios": "readonly"
+        "axios": "readonly",
+        "filterConfig": "readonly"
     }
 }
