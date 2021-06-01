@@ -1,8 +1,8 @@
 
 /*
- v1.4
+ v1.5
  data: 22/04/2021
- update: 25/05/2021
+ update: 01/06/2021
 */
 function SuggestoMap(mapid) {
 	this.sm = {
@@ -15,27 +15,30 @@ function SuggestoMap(mapid) {
 		tlayers: {
 			'osm': {
 				layer: null,
-				name: 'Open Street map' 
+				name: 'Open Street map'
 			},
 			'satellite': {
 				layer: null,
-				name: 'Satellite' 
+				name: 'Satellite'
 			},
 			'mapbox': {
 				layer: null,
-				name: 'Outdoor' 
+				name: 'Outdoor'
 			},
 			'mapboxsatellite': {
 				layer: null,
-				name: 'Satellite' 
+				name: 'Satellite'
 			},
 			'googleterrain': {
 				layer: null,
-				name: 'Terrain' 
+				name: 'Terrain'
 			}
 		},
 		defaults: {
 			gestureHandling: true,
+			zoomControl: true,
+			attributionControl: true,
+			dragging: true,
 			fitBounds: true,
 			layersFilter: '*',
 			markersFilter: '*',
@@ -45,7 +48,7 @@ function SuggestoMap(mapid) {
 		createMap: function (jsonData) {
 			var vm = this;
 			for (var attrname in vm.defaults) {
-				
+
 				if (typeof (jsonData[attrname]) !== 'undefined') {
 					vm.defaults[attrname] = jsonData[attrname];
 				};
@@ -55,13 +58,17 @@ function SuggestoMap(mapid) {
 
 			if (vm.lmap == null) {
 
-				vm.lmap = L.map(mapid, { gestureHandling: vm.defaults.gestureHandling }).setView(jsonData.mapcenter, jsonData.zoom);
+				vm.lmap = L.map(mapid, {
+					gestureHandling: vm.defaults.gestureHandling,
+					zoomControl: vm.defaults.zoomControl,
+					attributionControl: vm.defaults.attributionControl,
+					dragging: vm.defaults.dragging,
+				}).setView(jsonData.mapcenter, jsonData.zoom);
 
 				vm.tlayers['osm'].layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					maxZoom: 19,
 					attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 				});
-
 
 				vm.tlayers['satellite'].layer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 					attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
@@ -90,13 +97,12 @@ function SuggestoMap(mapid) {
 					subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 				});
 
-
 				var baseLayers = {};
 				var baseLayersCount = 0;
-				
-				for (var itl=0;itl < vm.defaults.tilelayers.length;itl++) {
+
+				for (var itl = 0; itl < vm.defaults.tilelayers.length; itl++) {
 					var layerId = vm.defaults.tilelayers[itl];
-					if (typeof(vm.tlayers[layerId]) !== 'undefined') {
+					if (typeof (vm.tlayers[layerId]) !== 'undefined') {
 						baseLayers[vm.tlayers[layerId].name] = vm.tlayers[layerId].layer
 						baseLayersCount++;
 					}
@@ -105,14 +111,19 @@ function SuggestoMap(mapid) {
 				if (baseLayersCount > 1) {
 					L.control.layers(baseLayers).addTo(vm.lmap);
 				}
-				
-				var defaultTileLayer = vm.tlayers[vm.defaults.tilelayer];
-				if (typeof(defaultTileLayer) !== 'undefined') {
-					defaultTileLayer.layer.addTo(vm.lmap)
-				} else {
-					defaultTileLayer = vm.tlayers['osm']
+
+				console.log('vm.defaults.tilelayer',)
+
+				if (vm.defaults.tilelayer != 'none') {
+					var defaultTileLayer = vm.tlayers[vm.defaults.tilelayer];
+					if (typeof (defaultTileLayer) !== 'undefined') {
+						defaultTileLayer.layer.addTo(vm.lmap)
+					} else {
+						defaultTileLayer = vm.tlayers['osm']
+					}
+					defaultTileLayer.layer.addTo(vm.lmap);
+
 				}
-				defaultTileLayer.layer.addTo(vm.lmap);
 			}
 
 			// Markers ---
@@ -139,7 +150,7 @@ function SuggestoMap(mapid) {
 						var filter = e.sourceTarget.customdata.group + '.*';
 						vm.showFilteredMarkers(filter);
 						vm.showFilteredLayers(filter);
-						
+
 					}
 				});
 				//aMarker.on('mouseover', function (e) { console.log('mouseover', e.sourceTarget.customdata) });
@@ -185,7 +196,7 @@ function SuggestoMap(mapid) {
 
 			vm.showFilteredLayers(vm.defaults.layersFilter);
 
-			vm.lmap.on('click', function(){
+			vm.lmap.on('click', function () {
 				//alert("You clicked the map at " + e.latlng);
 				vm.showFilteredMarkers('*');
 				vm.showFilteredLayers('*');
@@ -226,6 +237,18 @@ function SuggestoMap(mapid) {
 			var vm = this;
 			for (var i = 0; i < vm.mlist.length; i++) {
 				vm.mlist[i].marker.addTo(vm.lmap)
+			}
+		},
+		disableMapTouch() {
+			var vm = this;
+			vm.lmap.scrollWheelZoom.disable();
+			vm.lmap.dragging.disable();
+			vm.lmap.touchZoom.disable();
+			vm.lmap.doubleClickZoom.disable();
+			vm.lmap.boxZoom.disable();
+			vm.lmap.keyboard.disable();
+			if (vm.lmap.tap) {
+				vm.lmap.tap.disable();
 			}
 		},
 		showGroup(group) {
@@ -275,7 +298,7 @@ function SuggestoMap(mapid) {
 					show = true;
 				}
 
-				console.log("showFilteredMarkers ", filter,  i, fa.length, fg.length, show)
+				console.log("showFilteredMarkers ", filter, i, fa.length, fg.length, show)
 
 				if (show) {
 					vm.mlist[i].marker.addTo(vm.lmap)

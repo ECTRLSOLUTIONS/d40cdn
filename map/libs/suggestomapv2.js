@@ -1,47 +1,45 @@
 
 /*
- v1.3
+ v1.4
  data: 22/04/2021
- https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/libs/suggestomapv2.js
-
-
-Da capire se può funzionare il "Multiclaster gerarchico su più livelli"
-Altrimenti se possibile mettere il cluster solo sul 1° livello.
-
-
+ update: 25/05/2021
 */
 function SuggestoMap(mapid) {
 	this.sm = {
-		version: '1.3',
+		version: '1.4',
+		fitBounds: true,
 		lmap: null,
 		tileLayer: null,
 		mlist: [],
 		llist: [],
-		mcluster: [],
 		tlayers: {
 			'osm': {
 				layer: null,
-				name: 'Open Street map' 
+				name: 'Open Street map'
 			},
 			'satellite': {
 				layer: null,
-				name: 'Satellite' 
+				name: 'Satellite'
 			},
 			'mapbox': {
 				layer: null,
-				name: 'Outdoor' 
+				name: 'Outdoor'
 			},
 			'mapboxsatellite': {
 				layer: null,
-				name: 'Satellite' 
+				name: 'Satellite'
 			},
 			'googleterrain': {
 				layer: null,
-				name: 'Terrain' 
+				name: 'Terrain'
 			}
 		},
 		defaults: {
 			gestureHandling: true,
+			zoomControl: true,
+			attributionControl: true,
+			dragging: true,
+			fitBounds: true,
 			layersFilter: '*',
 			markersFilter: '*',
 			tilelayer: 'osm',
@@ -50,21 +48,27 @@ function SuggestoMap(mapid) {
 		createMap: function (jsonData) {
 			var vm = this;
 			for (var attrname in vm.defaults) {
+
 				if (typeof (jsonData[attrname]) !== 'undefined') {
 					vm.defaults[attrname] = jsonData[attrname];
-					vm.defaults[attrname] = jsonData[attrname];
 				};
+
+				console.log(attrname, vm.defaults[attrname])
 			}
 
 			if (vm.lmap == null) {
 
-				vm.lmap = L.map(mapid, { gestureHandling: vm.defaults.gestureHandling }).setView(jsonData.mapcenter, jsonData.zoom);
+				vm.lmap = L.map(mapid, {
+					gestureHandling: vm.defaults.gestureHandling,
+					zoomControl: vm.defaults.zoomControl,
+					attributionControl: vm.defaults.attributionControl,
+					dragging: vm.defaults.dragging,
+				}).setView(jsonData.mapcenter, jsonData.zoom);
 
 				vm.tlayers['osm'].layer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 					maxZoom: 19,
 					attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 				});
-
 
 				vm.tlayers['satellite'].layer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 					attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
@@ -93,13 +97,12 @@ function SuggestoMap(mapid) {
 					subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
 				});
 
-
 				var baseLayers = {};
 				var baseLayersCount = 0;
-				
-				for (var itl=0;itl < vm.defaults.tilelayers.length;itl++) {
+
+				for (var itl = 0; itl < vm.defaults.tilelayers.length; itl++) {
 					var layerId = vm.defaults.tilelayers[itl];
-					if (typeof(vm.tlayers[layerId]) !== 'undefined') {
+					if (typeof (vm.tlayers[layerId]) !== 'undefined') {
 						baseLayers[vm.tlayers[layerId].name] = vm.tlayers[layerId].layer
 						baseLayersCount++;
 					}
@@ -108,36 +111,34 @@ function SuggestoMap(mapid) {
 				if (baseLayersCount > 1) {
 					L.control.layers(baseLayers).addTo(vm.lmap);
 				}
-				
-				var defaultTileLayer = vm.tlayers[vm.defaults.tilelayer];
-				if (typeof(defaultTileLayer) !== 'undefined') {
-					defaultTileLayer.layer.addTo(vm.lmap)
-				} else {
-					defaultTileLayer = vm.tlayers['osm']
-				}
-				defaultTileLayer.layer.addTo(vm.lmap);
-			}
 
-			// Cluster 
-			if (vm.mcluster.length == 0) {
-				const clusteropt = {maxClusterRadius: 10};
-				for (i=0;i<4;i++) {
-					vm.mcluster[i] = L.markerClusterGroup(clusteropt);
-					vm.lmap.addLayer(vm.mcluster[i]);
+				console.log('vm.defaults.tilelayer',)
+
+				if (vm.defaults.tilelayer != 'none') {
+					var defaultTileLayer = vm.tlayers[vm.defaults.tilelayer];
+					if (typeof (defaultTileLayer) !== 'undefined') {
+						defaultTileLayer.layer.addTo(vm.lmap)
+					} else {
+						defaultTileLayer = vm.tlayers['osm']
+					}
+					defaultTileLayer.layer.addTo(vm.lmap);
+
 				}
-				
 			}
 
 			// Markers ---
+
 			if (vm.mlist.length > 0) {
 				for (var i = 0; i < vm.mlist.length; i++) {
-					vm.removeMarkerLayer(vm.mlist[i]);
+					vm.mlist[i].marker.removeFrom(vm.lmap);
+					vm.mlist[i].marker = null;
 				}
 				vm.mlist = [];
 			}
 
 			for (var i = 0; i < jsonData.markers.length; i++) {
 				var jsonMarker = jsonData.markers[i];
+				console.log(jsonMarker)
 				const svgIcon = L.divIcon(getSuggestoIconOptions(jsonMarker.type, jsonMarker.value, jsonMarker.size, jsonMarker['color']));
 				const aMarker = L.marker(jsonMarker.latlng, { icon: svgIcon });
 				if (jsonMarker.html !== '') {
@@ -149,9 +150,10 @@ function SuggestoMap(mapid) {
 						var filter = e.sourceTarget.customdata.group + '.*';
 						vm.showFilteredMarkers(filter);
 						vm.showFilteredLayers(filter);
-						
+
 					}
 				});
+				//aMarker.on('mouseover', function (e) { console.log('mouseover', e.sourceTarget.customdata) });
 				vm.mlist.push({ json: jsonMarker, marker: aMarker });
 			}
 
@@ -194,13 +196,18 @@ function SuggestoMap(mapid) {
 
 			vm.showFilteredLayers(vm.defaults.layersFilter);
 
-			vm.lmap.on('click', function(){
+			vm.lmap.on('click', function () {
 				//alert("You clicked the map at " + e.latlng);
 				vm.showFilteredMarkers('*');
 				vm.showFilteredLayers('*');
 			});
 
-			vm.lmap.fitBounds(vm.getMarkersLatLngArray());
+			if (vm.defaults.fitBounds == true) {
+				console.log('fitBounds')
+				vm.lmap.fitBounds(vm.getMarkersLatLngArray());
+			} else {
+				console.log('no fitBounds')
+			}
 
 		},
 		getMarkersLatLngArray() {
@@ -214,7 +221,7 @@ function SuggestoMap(mapid) {
 		hideAll(group) {
 			var vm = this;
 			for (var i = 0; i < vm.mlist.length; i++) {
-				vm.removeMarkerLayer(vm.mlist[i]);
+				vm.mlist[i].marker.removeFrom(vm.lmap)
 			}
 		},
 		hideGroup(group) {
@@ -222,14 +229,26 @@ function SuggestoMap(mapid) {
 			for (var i = 0; i < vm.mlist.length; i++) {
 				var jsm = vm.mlist[i].json;
 				if (jsm.group == group) {
-					vm.removeMarkerLayer(vm.mlist[i]);
+					vm.mlist[i].marker.removeFrom(vm.lmap)
 				}
 			}
 		},
 		showAll(group) {
 			var vm = this;
 			for (var i = 0; i < vm.mlist.length; i++) {
-				vm.addMarkerLayer(vm.mlist[i]);
+				vm.mlist[i].marker.addTo(vm.lmap)
+			}
+		},
+		disableMapTouch() {
+			var vm = this;
+			vm.lmap.scrollWheelZoom.disable();
+			vm.lmap.dragging.disable();
+			vm.lmap.touchZoom.disable();
+			vm.lmap.doubleClickZoom.disable();
+			vm.lmap.boxZoom.disable();
+			vm.lmap.keyboard.disable();
+			if (vm.lmap.tap) {
+				vm.lmap.tap.disable();
 			}
 		},
 		showGroup(group) {
@@ -237,7 +256,7 @@ function SuggestoMap(mapid) {
 			for (var i = 0; i < vm.mlist.length; i++) {
 				var jsm = vm.mlist[i].json;
 				if (jsm.group == group) {
-					vm.addMarkerLayer(vm.mlist[i]);
+					vm.mlist[i].marker.addTo(vm.lmap)
 				}
 			}
 		},
@@ -279,39 +298,13 @@ function SuggestoMap(mapid) {
 					show = true;
 				}
 
+				console.log("showFilteredMarkers ", filter, i, fa.length, fg.length, show)
+
 				if (show) {
-					vm.addMarkerLayer(vm.mlist[i]);
+					vm.mlist[i].marker.addTo(vm.lmap)
 				} else {
-					vm.removeMarkerLayer(vm.mlist[i]);
+					vm.mlist[i].marker.removeFrom(vm.lmap)
 				}
-			}
-		},
-		addMarkerLayer(obj) {
-			var vm = this;
-			var i = 0;
-			try {
-				i = obj.json.group.split('.').length-1;
-			} catch (e){
-				console.log('Error addMarkerLayer: invalid group', JSON.stringify(obj.json, null, 2))
-			}
-			try {
-				vm.mcluster[i].addLayer(obj.marker);	
-			} catch (e){
-				console.log('Error addMarkerLayer: invalid cluster', i, JSON.stringify(obj.json, null, 2))
-			}
-		},
-		removeMarkerLayer(obj) {
-			var vm = this;
-			var i = 0;
-			try {
-				i = obj.json.group.split('.').length-1;
-			} catch (e){
-				console.log('Error removeMarkerLayer: invalid group', JSON.stringify(obj.json, null, 2))
-			}
-			try {
-				vm.mcluster[i].removeLayer(obj.marker);	
-			} catch (e){
-				console.log('Error removeMarkerLayer: invalid cluster', i, JSON.stringify(obj.json, null, 2))
 			}
 		},
 		showFilteredLayers(filter) {
@@ -361,6 +354,9 @@ function SuggestoMap(mapid) {
 		}
 	}
 }
+
+
+
 
 
 

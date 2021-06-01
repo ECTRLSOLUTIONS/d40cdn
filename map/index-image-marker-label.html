@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/index-image-marker-label.html -->
+    <!-- https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/data/moliseimage.png -->
+    <title>Suggesto Map Demo</title>
+
+    <script src="https://kit.fontawesome.com/babc472531.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="libs/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="libs/suggestomap.css" crossorigin="" />
+    <link rel="stylesheet" href="libs/pure-min.css">
+    <link rel="stylesheet" href="libs/grids-responsive-min.css">
+
+    <link rel="stylesheet" href="libs/leaflet-gesture-handling.min.css">
+
+    <script src="libs/leaflet.js" crossorigin=""></script>
+    <script src="libs/leaflet-omnivore.min.js" crossorigin=""></script>
+    <script src="libs/leaflet-gesture-handling.min.js" crossorigin=""></script>
+
+    <link rel="icon" href="favicon.ico">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+</head>
+
+<body>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .mapsize {
+            height: 100vh;
+            width: 100%;
+        }
+
+        .padding20 {
+            padding: 20px;
+        }
+
+        /* Classe utilizzata per lo stile della label (div icon) */
+        .leaflet-div-icon {
+            background: transparent; 
+            border: 0; 
+            font-size: medium;
+            font-weight: 600;
+        }
+        
+    </style>
+
+    <div class="mapsize" id="mapid1"></div>
+    
+    <script src="libs/suggestomap.js"></script>
+    <script>
+        var jsonData1 = {
+            tilelayer: 'none',
+            tilelayers: [''],
+            mapcenter: [41.6914, 14.6860],
+            zoom: 9,
+            zoomControl:false, // Nuovo parametro per disabilitare i controlli zoom.
+            attributionControl: false, // Nuovo parametro per togliere la label Leaflet 
+            markersFilter: '*',
+            gestureHandling: false,
+            fitBounds: false,
+            markers: [],
+            layers: []
+        };
+
+        var sm1 = new SuggestoMap('mapid1');
+        sm1.sm.createMap(jsonData1);
+
+        // Disabilita interazione mappa (drag, ...)
+        sm1.sm.disableMapTouch();
+
+        // Posizione del marker e della label
+        var termoliLatLon = [41.99828, 14.97986];
+
+        // Marker cerchio
+        var marker = L.circleMarker(termoliLatLon, {radius:3, color: '#000', fillOpacity: 1}).addTo(sm1.sm.lmap);
+
+        // Immagine Overlay
+        var icon = L.divIcon({iconSize:-10,html:'TERMOLI'});
+        L.marker(termoliLatLon,{icon: icon}).addTo(sm1.sm.lmap);
+
+        // Immagine Overlay
+        var imageUrl = 'https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/data/moliseimage.png';
+        var imageBounds = [[42.15322, 13.91418], [41.33351, 15.16663]];
+        L.imageOverlay(imageUrl, imageBounds).addTo(sm1.sm.lmap);
+        L.imageOverlay(imageUrl, imageBounds).bringToFront();
+
+    </script>
+</body>
+
+</html>
