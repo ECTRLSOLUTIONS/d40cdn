@@ -125,7 +125,9 @@ var d40_assetpub = {
                 that.jsonParams[fg.paramName] = value;
             });
 
-            this.pushNewParams();
+            if (this.filterConfig.routerEnabled) {
+                this.pushNewParams();
+            }
 
             var rowsToSkip = Math.floor(skipRows / this.filterConfig.maxItemInMap) * this.filterConfig.maxItemInMap;
             rowsToSkip < 0 ? (this.skippedRowsInDocs = 0) : (this.skippedRowsInDocs = rowsToSkip);
@@ -233,7 +235,11 @@ var d40_assetpub = {
                 }
 
                 this.jsonParams.pag = this.filterConfig.currentPage;
-                this.pushNewParams();
+
+                if (this.filterConfig.routerEnabled) {
+                    this.pushNewParams();
+                }
+
                 this.buildPagination(this.totalItems);
             } else {
                 this.fetchData();
