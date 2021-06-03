@@ -145,7 +145,12 @@ var d40_assetpub = {
                         that.applyFacets(res.data.facetedValues);
                     }
 
-                    that.allItems = res.data.docs;
+                    if (res.data.docs) {
+                        that.allItems = res.data.docs;
+                    } else {
+                        that.allItems = [];
+                    }
+
                     that.totalItems = res.data.metadata.numFound;
                     that.allItems.forEach(function (item, index) {
                         if (index < that.filterConfig.pageSize) {
