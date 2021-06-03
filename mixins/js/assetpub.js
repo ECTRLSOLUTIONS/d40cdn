@@ -138,7 +138,7 @@ var d40_assetpub = {
             //window.location.origin + window.location.pathname + "?p_p_id=Configurable&p_p_lifecycle=2&p_p_resource_id=json&_Configurable_jsonParams="
 
             axios
-                .get(this.filterConfig.endPoint + JSON.stringify(this.$route.query))
+                .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then(function (res) {
                     console.log("Data fetched, result: ", res.data);
                     that.docs = [];
