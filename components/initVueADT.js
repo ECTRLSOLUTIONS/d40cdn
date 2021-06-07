@@ -1,9 +1,10 @@
-function initVueADT(portletId, namespace = "", filterConfig, mixins = []) {
+function initVueADT(portletId, namespace = "", filterConfig, mixins = [], components = {}) {
     var instanceName = "vue_" + portletId.split("INSTANCE_")[1] + "app";
 
     window[instanceName] = new Vue({
         el: portletId,
         mixins: mixins,
+        components: components,
         router: new VueRouter({
             routes: [],
             mode: filterConfig.routerMode,

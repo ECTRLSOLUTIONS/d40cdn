@@ -135,8 +135,6 @@ var d40_assetpub = {
             this.jsonParams.pag = this.filterConfig.currentPage;
             this.jsonParams.num = this.filterConfig.maxDocsToFetch;
 
-            //window.location.origin + window.location.pathname + "?p_p_id=Configurable&p_p_lifecycle=2&p_p_resource_id=json&_Configurable_jsonParams="
-
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then(function (res) {
@@ -170,6 +168,11 @@ var d40_assetpub = {
                 })
                 .finally(function () {
                     that.loading = false;
+
+                    if (typeof that.initLazyLoad === "function") {
+                        that.initLazyLoad();
+                    }
+
                     that.initFilter();
                 });
         },
@@ -219,6 +222,9 @@ var d40_assetpub = {
             });
 
             this.fetchData();
+        },
+        getFilterGroup: function (name) {
+            return _.find(this.filterConfig.filterGroup, ["paramName", name]);
         },
         gotoPage: function (page) {
             console.log("Going to page " + page);
