@@ -108,16 +108,22 @@ var d40_assetpub = {
                     fg.selected.trim() == 0 ? (value = "") : (value = fg.selected.trim());
                 }
                 if (fg.type == "multiselect") {
-                    fg.selected.forEach(function (selection) {
-                        if (selection.categoryId) {
-                            value = selection.categoryId.trim().join(", ");
+                    fg.selected.forEach(function (cat) {
+                        if (cat.selected) {
+                            if (value.length > 0) {
+                                value += ", ";
+                            }
+                            value += cat.categoryId.trim();
                         }
                     });
                 }
                 if (fg.type == "checkboxes") {
                     fg.categories.forEach(function (cat) {
                         if (cat.selected) {
-                            value = cat.categoryId.trim().join(", ");
+                            if (value.length > 0) {
+                                value += ", ";
+                            }
+                            value += cat.categoryId.trim();
                         }
                     });
                 }
