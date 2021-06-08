@@ -229,6 +229,22 @@ var d40_assetpub = {
 
             this.fetchData();
         },
+        resetFilterGroup: function (paramName) {
+            if (this.getFilterGroup(paramName).type == "select" || this.getFilterGroup(paramName).type == "textinput" || this.getFilterGroup(paramName).type == "dateinput") {
+                this.getFilterGroup(paramName).selected = "";
+            }
+            if (this.getFilterGroup(paramName).type == "multiselect") {
+                this.getFilterGroup(paramName).selected = [];
+            }
+            if (this.getFilterGroup(paramName).type == "checkboxes") {
+                this.getFilterGroup(paramName).selected = this.getFilterGroup(paramName).selection = this.getFilterGroup(paramName).value = "";
+                this.getFilterGroup(paramName).categories.forEach(function (cat) {
+                    cat.selected = false;
+                });
+            }
+
+            this.fetchData();
+        },
         getFilterGroup: function (name) {
             return _.find(this.filterConfig.filterGroup, ["paramName", name]);
         },
