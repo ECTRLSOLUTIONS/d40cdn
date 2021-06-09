@@ -237,7 +237,7 @@ var d40_assetpub = {
                 this.getFilterGroup(paramName).selected = [];
             }
             if (this.getFilterGroup(paramName).type == "checkboxes") {
-                this.getFilterGroup(paramName).selected = this.getFilterGroup(paramName).selection = this.getFilterGroup(paramName).value = "";
+                this.getFilterGroup(paramName).value = [];
                 this.getFilterGroup(paramName).categories.forEach(function (cat) {
                     cat.selected = false;
                 });
