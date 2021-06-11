@@ -14,6 +14,7 @@ function initVueADT(portletId, namespace = "", filterConfig, mixins = [], compon
             groupedCategories: [],
             filterConfig: filterConfig,
             namespace: namespace,
+            portletId: portletId,
         },
         created() {
             console.log("Vue ADT instance created. Access it using window." + instanceName);

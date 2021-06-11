@@ -176,7 +176,11 @@ var d40_assetpub = {
                     that.loading = false;
 
                     if (typeof that.initLazyLoad === "function") {
-                        that.initLazyLoad();
+                        if (typeof that.portletId !== "undefined") {
+                            that.initLazyLoad(that.portletId);
+                        } else {
+                            that.initLazyLoad();
+                        }
                     }
 
                     that.initFilter();

@@ -1,8 +1,8 @@
 var d40_lazyload = {
     methods: {
-        initLazyLoad: function () {
+        initLazyLoad: function (container = "") {
             if ("loading" in HTMLImageElement.prototype) {
-                const images = document.querySelectorAll('img[loading="lazy"]');
+                const images = document.querySelectorAll(container + ' img[loading="lazy"]');
                 images.forEach((img) => {
                     img.src = img.dataset.src;
                 });
