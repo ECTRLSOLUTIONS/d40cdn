@@ -20,7 +20,14 @@ var d40_favorites = {
 
             var newFavorite = {
                 id: item.id,
-                contentJSON: item.contentJSON,
+                contentJSON: {
+                    title: item.contentJSON.title,
+                    previewDescription: item.contentJSON.previewDescription,
+                    description: item.contentJSON.description,
+                    geoRef: item.contentJSON.geoRef,
+                    previewPicture: item.contentJSON.previewPicture,
+                    viewUrl: item.contentJSON.viewUrl,
+                },
             };
 
             this.favorites.push(newFavorite);
