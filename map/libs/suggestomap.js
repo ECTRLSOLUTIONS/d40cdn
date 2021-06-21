@@ -1,12 +1,12 @@
 
 /*
- v1.5
+ v1.6
  data: 22/04/2021
- update: 01/06/2021
+ update: 21/06/2021
 */
 function SuggestoMap(mapid) {
 	this.sm = {
-		version: '1.4',
+		version: '1.6',
 		fitBounds: true,
 		lmap: null,
 		tileLayer: null,
@@ -35,6 +35,7 @@ function SuggestoMap(mapid) {
 			}
 		},
 		defaults: {
+			markercb: null,
 			gestureHandling: true,
 			zoomControl: true,
 			attributionControl: true,
@@ -52,8 +53,7 @@ function SuggestoMap(mapid) {
 				if (typeof (jsonData[attrname]) !== 'undefined') {
 					vm.defaults[attrname] = jsonData[attrname];
 				};
-
-				console.log(attrname, vm.defaults[attrname])
+				
 			}
 
 			if (vm.lmap == null) {
@@ -112,8 +112,7 @@ function SuggestoMap(mapid) {
 					L.control.layers(baseLayers).addTo(vm.lmap);
 				}
 
-				console.log('vm.defaults.tilelayer',)
-
+				
 				if (vm.defaults.tilelayer != 'none') {
 					var defaultTileLayer = vm.tlayers[vm.defaults.tilelayer];
 					if (typeof (defaultTileLayer) !== 'undefined') {
@@ -138,7 +137,7 @@ function SuggestoMap(mapid) {
 
 			for (var i = 0; i < jsonData.markers.length; i++) {
 				var jsonMarker = jsonData.markers[i];
-				console.log(jsonMarker)
+				
 				const svgIcon = L.divIcon(getSuggestoIconOptions(jsonMarker.type, jsonMarker.value, jsonMarker.size, jsonMarker['color']));
 				const aMarker = L.marker(jsonMarker.latlng, { icon: svgIcon });
 				if (jsonMarker.html !== '') {
@@ -150,10 +149,14 @@ function SuggestoMap(mapid) {
 						var filter = e.sourceTarget.customdata.group + '.*';
 						vm.showFilteredMarkers(filter);
 						vm.showFilteredLayers(filter);
-
 					}
+					
+					if (vm.defaults.markercb !== null) {
+						vm.defaults.markercb(e.sourceTarget);
+					}
+					
 				});
-				//aMarker.on('mouseover', function (e) { console.log('mouseover', e.sourceTarget.customdata) });
+				
 				vm.mlist.push({ json: jsonMarker, marker: aMarker });
 			}
 
@@ -203,11 +206,8 @@ function SuggestoMap(mapid) {
 			});
 
 			if (vm.defaults.fitBounds == true) {
-				console.log('fitBounds')
 				vm.lmap.fitBounds(vm.getMarkersLatLngArray());
-			} else {
-				console.log('no fitBounds')
-			}
+			} 
 
 		},
 		getMarkersLatLngArray() {
@@ -297,8 +297,6 @@ function SuggestoMap(mapid) {
 				if (fg.length == 1) {
 					show = true;
 				}
-
-				console.log("showFilteredMarkers ", filter, i, fa.length, fg.length, show)
 
 				if (show) {
 					vm.mlist[i].marker.addTo(vm.lmap)
