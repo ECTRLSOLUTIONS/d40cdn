@@ -2,48 +2,52 @@ var d40_map = {
     data: {
         regionLat: "41.684672",
         regionLng: "14.595614",
+        mapActive: false,
         map: {},
-    },
-    mounted() {
-        this.buildMap();
     },
     methods: {
         buildMap: function () {
-            var that = this,
-                layers = [],
-                markers = [],
-                map = new SuggestoMap(this.namespace + "_suggesto-map");
+            if (!this.mapActive) {
+                var that = this;
+                this.mapActive = true;
 
-            this.docs.forEach(function (doc) {
-                var marker = {
-                    group: "1",
-                    latlng: [parseFloat(doc.contentJSON.geoRef.latitude), parseFloat(doc.contentJSON.geoRef.longitude)],
-                    value: "",
-                    type: "svgNumIcon",
-                    size: "10",
-                    color: "#a71d34",
-                    html: "",
-                };
+                setTimeout(function () {
+                    var layers = [],
+                        markers = [],
+                        map = new SuggestoMap(that.namespace + "_suggesto-map");
 
-                markers.push(marker);
-            });
+                    that.docs.forEach(function (doc) {
+                        var marker = {
+                            group: "1",
+                            latlng: [parseFloat(doc.contentJSON.geoRef.latitude), parseFloat(doc.contentJSON.geoRef.longitude)],
+                            value: "",
+                            type: "svgNumIcon",
+                            size: "10",
+                            color: "#a71d34",
+                            html: "",
+                        };
 
-            var mapData = {
-                tilelayer: "osm",
-                gestureHandling: true,
-                fitBounds: false,
-                mapcenter: [parseFloat(that.regionLat), parseFloat(that.regionLng)],
-                zoom: 10,
-                markersFilter: "*",
-                markers: markers,
-                layers: layers,
-            };
+                        markers.push(marker);
+                    });
 
-            console.log("mapData is: ", mapData);
+                    var mapData = {
+                        tilelayer: "osm",
+                        gestureHandling: true,
+                        fitBounds: false,
+                        mapcenter: [parseFloat(that.regionLat), parseFloat(that.regionLng)],
+                        zoom: 10,
+                        markersFilter: "*",
+                        markers: markers,
+                        layers: layers,
+                    };
 
-            map.sm.createMap(mapData);
+                    console.log("mapData is: ", mapData);
 
-            this.map = map;
+                    map.sm.createMap(mapData);
+
+                    that.map = map;
+                }, 250);
+            }
         },
     },
 };
