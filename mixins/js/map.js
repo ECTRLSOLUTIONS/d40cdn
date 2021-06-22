@@ -17,17 +17,19 @@ var d40_map = {
                         map = new SuggestoMap(that.namespace + "_suggesto-map");
 
                     that.docs.forEach(function (doc) {
-                        var marker = {
-                            group: "1",
-                            latlng: [parseFloat(doc.contentJSON.geoRef.latitude), parseFloat(doc.contentJSON.geoRef.longitude)],
-                            value: "",
-                            type: "svgNumIcon",
-                            size: "10",
-                            color: "#a71d34",
-                            html: "",
-                        };
+                        if (doc.contentJSON.geoRef) {
+                            var marker = {
+                                group: "1",
+                                latlng: [parseFloat(doc.contentJSON.geoRef.latitude), parseFloat(doc.contentJSON.geoRef.longitude)],
+                                value: "",
+                                type: "svgNumIcon",
+                                size: "10",
+                                color: "#a71d34",
+                                html: "",
+                            };
 
-                        markers.push(marker);
+                            markers.push(marker);
+                        }
                     });
 
                     var mapData = {

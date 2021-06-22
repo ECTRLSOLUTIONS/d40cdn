@@ -173,15 +173,11 @@ var d40_assetpub = {
                     that.totalItems = 0;
                 })
                 .finally(function () {
-                    that.loading = false;
-
-                    if (typeof that.initLazyLoad === "function") {
-                        if (typeof that.portletId !== "undefined") {
-                            that.initLazyLoad(that.portletId);
-                        } else {
-                            that.initLazyLoad();
-                        }
+                    if (typeof that.runAfterFetch === "function") {
+                        that.runAfterFetch();
                     }
+
+                    that.loading = false;
 
                     that.initFilter();
                 });
