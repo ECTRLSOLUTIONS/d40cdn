@@ -16,26 +16,30 @@ var d40_favorites = {
             }
         },
         setFavorite: function (item) {
-            this.getFavorites();
+            if (Liferay.ThemeDisplay.isSignedIn()) {
+                this.getFavorites();
 
-            var newFavorite = {
-                id: item.id,
-                contentJSON: {
-                    title: item.contentJSON.title,
-                    previewDescription: item.contentJSON.previewDescription,
-                    description: item.contentJSON.description,
-                    geoRef: item.contentJSON.geoRef,
-                    previewPicture: item.contentJSON.previewPicture,
-                    viewUrl: item.contentJSON.viewUrl,
-                },
-            };
+                var newFavorite = {
+                    id: item.id,
+                    contentJSON: {
+                        title: item.contentJSON.title,
+                        previewDescription: item.contentJSON.previewDescription,
+                        description: item.contentJSON.description,
+                        geoRef: item.contentJSON.geoRef,
+                        previewPicture: item.contentJSON.previewPicture,
+                        viewUrl: item.contentJSON.viewUrl,
+                    },
+                };
 
-            this.favorites.push(newFavorite);
-            this.saveFavorites();
+                this.favorites.push(newFavorite);
+                this.saveFavorites();
+            }
         },
         removeFavorite: function (item) {
-            this.favorites = this.favorites.filter((obj) => obj.id !== item.id);
-            this.saveFavorites();
+            if (Liferay.ThemeDisplay.isSignedIn()) {
+                this.favorites = this.favorites.filter((obj) => obj.id !== item.id);
+                this.saveFavorites();
+            }
         },
         isFavorite: function (itemId) {
             if (this.favorites.some((e) => e.id == itemId)) {
@@ -45,8 +49,10 @@ var d40_favorites = {
             return false;
         },
         saveFavorites: function () {
-            localStorage.setItem("favorites", JSON.stringify(this.favorites));
-            console.log("favorites updated");
+            if (Liferay.ThemeDisplay.isSignedIn()) {
+                localStorage.setItem("favorites", JSON.stringify(this.favorites));
+                console.log("favorites updated");
+            }
         },
         resetAllFavorites: function () {
             if (confirm("delete all favorites?")) {
