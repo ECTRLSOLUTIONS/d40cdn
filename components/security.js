@@ -1,3 +1,5 @@
 if (!Liferay.ThemeDisplay.getUserEmailAddress().includes("@suggesto.")) {
-    Vue.config.devtools = false;
+    document.addEventListener("DOMContentLoaded", function () {
+        Vue.config.devtools = false;
+    });
 }
