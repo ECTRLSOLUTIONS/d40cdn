@@ -141,6 +141,10 @@ var d40_assetpub = {
             this.jsonParams.pag = this.filterConfig.currentPage;
             this.jsonParams.num = this.filterConfig.maxDocsToFetch;
 
+            if (typeof this.runBeforeFetch === "function") {
+                this.runBeforeFetch();
+            }
+
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then(function (res) {
