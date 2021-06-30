@@ -29,6 +29,8 @@ var d40_share = {
             clip.select();
             document.execCommand("copy");
             document.body.removeChild(clip);
+
+            alert("Link copiato");
         },
     },
 };
