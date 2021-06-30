@@ -12,17 +12,28 @@ var d40_assetpub = {
         this.fetchData();
     },
     computed: {
-        searchableList: function () {
+        searchableList() {
             var that = this;
 
-            return _.filter(this.allItems, function (item) {
+            return _.filter(this.allItems, (item) => {
                 return item.title.toLowerCase().includes(_.find(that.filterConfig.filterGroup, ["paramName", "kw"]).value.toLowerCase());
             });
         },
+        pageStart() {
+            return (this.filterConfig.currentPage - 1) * Number(this.filterConfig.pageSize);
+        },
+        pageEnd() {
+            return this.pageStart + Number(this.filterConfig.pageSize);
+        },
+        visibleDocs() {
+            return this.allItems.slice(this.pageStart, this.pageEnd);
+        },
     },
     methods: {
-        initFilter: function () {
+        initFilter() {
             var that = this;
+
+            console.log("router: ", this.$route.query);
 
             if (this.$route.query.num) {
                 this.filterConfig.pageSize = this.$route.query.num;
@@ -34,9 +45,11 @@ var d40_assetpub = {
                 this.filterConfig.qry = this.$route.query.qry;
             }
 
-            this.filterConfig.filterGroup.forEach(function (fg) {
+            this.filterConfig.filterGroup.forEach((fg) => {
                 var value = that.$route.query[fg.paramName],
                     catSelected = [];
+
+                console.log(fg.paramName + " value is ", value);
 
                 if (value) {
                     if (fg.type == "textinput" || fg.type == "dateinput") {
@@ -45,13 +58,12 @@ var d40_assetpub = {
                     if (fg.type == "select") {
                         value == 0 ? (fg.selected = "") : (fg.selected = value);
                     }
-                    if (fg.type == "multiselect") {
+                    if (fg.type == "checkboxes") {
                         catSelected = value.split(",");
-
-                        fg.categories.forEach(function (cat) {
+                        fg.categories.forEach((cat) => {
                             var found = false;
 
-                            catSelected.forEach(function (selection) {
+                            catSelected.forEach((selection) => {
                                 if (selection.trim() == cat.categoryId) {
                                     found = true;
                                 }
@@ -60,24 +72,10 @@ var d40_assetpub = {
                             cat.selected = found;
                         });
                     }
-                    if (fg.type == "checkboxes") {
-                        catSelected = value.split(",");
-                        fg.categories.forEach(function (cat) {
-                            var found = [];
-
-                            catSelected.forEach(function (selection) {
-                                if (selection.trim() == cat.categoryId) {
-                                    found += selection.trim();
-                                }
-                            });
-
-                            fg.selected = found;
-                        });
-                    }
                 }
             });
         },
-        fetchData: function () {
+        fetchData() {
             var that = this,
                 skipRows = (this.filterConfig.currentPage - 1) * this.filterConfig.pageSize;
 
@@ -98,7 +96,7 @@ var d40_assetpub = {
             this.jsonParams.orderByType1 = this.filterConfig.orderByType1;
             this.jsonParams.orderByType2 = this.filterConfig.orderByType2;
 
-            this.filterConfig.filterGroup.forEach(function (fg) {
+            this.filterConfig.filterGroup.forEach((fg) => {
                 var value = "";
 
                 if (fg.type == "textinput" || fg.type == "dateinput") {
@@ -107,23 +105,20 @@ var d40_assetpub = {
                 if (fg.type == "select") {
                     fg.selected.trim() == 0 ? (value = "") : (value = fg.selected.trim());
                 }
-                if (fg.type == "multiselect") {
-                    fg.selected.forEach(function (cat) {
-                        if (cat.selected) {
-                            if (value.length > 0) {
-                                value += ", ";
-                            }
-                            value += cat.categoryId.trim();
-                        }
-                    });
-                }
                 if (fg.type == "checkboxes") {
-                    fg.categories.forEach(function (cat) {
+                    fg.value = "";
+
+                    fg.categories.forEach((cat) => {
                         if (cat.selected) {
                             if (value.length > 0) {
                                 value += ", ";
                             }
                             value += cat.categoryId.trim();
+
+                            if (fg.value.length > 0) {
+                                fg.value += ", ";
+                            }
+                            fg.value += cat.label;
                         }
                     });
                 }
@@ -139,7 +134,6 @@ var d40_assetpub = {
             rowsToSkip < 0 ? (this.skippedRowsInDocs = 0) : (this.skippedRowsInDocs = rowsToSkip);
 
             this.jsonParams.pag = this.filterConfig.currentPage;
-            this.jsonParams.num = this.filterConfig.maxDocsToFetch;
 
             if (typeof this.runBeforeFetch === "function") {
                 this.runBeforeFetch();
@@ -147,7 +141,7 @@ var d40_assetpub = {
 
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
-                .then(function (res) {
+                .then((res) => {
                     console.log("Data fetched, result: ", res.data);
                     that.docs = [];
 
@@ -162,7 +156,7 @@ var d40_assetpub = {
                     }
 
                     that.totalItems = res.data.metadata.numFound;
-                    that.allItems.forEach(function (item, index) {
+                    that.allItems.forEach((item, index) => {
                         if (index < that.filterConfig.pageSize) {
                             that.docs.push(item);
                         }
@@ -170,33 +164,31 @@ var d40_assetpub = {
 
                     that.buildPagination(that.totalItems);
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.log("Error fetching data: ", err);
 
                     that.allItems = that.docs = [];
                     that.totalItems = 0;
                 })
-                .finally(function () {
+                .finally(() => {
                     if (typeof that.runAfterFetch === "function") {
                         that.runAfterFetch();
                     }
 
                     that.loading = false;
-
-                    that.initFilter();
                 });
         },
-        applyFacets: function (facetedValues) {
+        applyFacets(facetedValues) {
             console.log("Applying faceted values: ", facetedValues);
 
-            this.filterConfig.filterGroup.forEach(function (fg) {
+            this.filterConfig.filterGroup.forEach((fg) => {
                 if (fg.type == "select" || fg.type == "checkboxes") {
                     if (_.isEmpty(facetedValues)) {
-                        fg.categories.forEach(function (cat) {
+                        fg.categories.forEach((cat) => {
                             cat.counter = 0;
                         });
                     } else {
-                        fg.categories.forEach(function (cat) {
+                        fg.categories.forEach((cat) => {
                             cat.counter = facetedValues[fg.paramName].values[cat.categoryId.trim()];
                             !cat.counter ? (cat.counter = 0) : "";
                         });
@@ -204,7 +196,7 @@ var d40_assetpub = {
                 }
             });
         },
-        pushNewParams: function () {
+        pushNewParams() {
             this.$router
                 .replace({
                     path: window.location.pathname,
@@ -216,16 +208,13 @@ var d40_assetpub = {
                     }
                 });
         },
-        resetFilter: function () {
-            this.filterConfig.filterGroup.forEach(function (fg) {
+        resetFilter() {
+            this.filterConfig.filterGroup.forEach((fg) => {
                 if (fg.type == "select" || fg.type == "textinput" || fg.type == "dateinput") {
                     fg.selected = "";
                 }
-                if (fg.type == "multiselect") {
-                    fg.selected = [];
-                }
                 if (fg.type == "checkboxes") {
-                    fg.categories.forEach(function (cat) {
+                    fg.categories.forEach((cat) => {
                         cat.selected = "";
                     });
                 }
@@ -233,26 +222,35 @@ var d40_assetpub = {
 
             this.fetchData();
         },
-        resetFilterGroup: function (paramName) {
+        resetFilterGroup(paramName) {
             if (this.getFilterGroup(paramName).type == "select" || this.getFilterGroup(paramName).type == "textinput" || this.getFilterGroup(paramName).type == "dateinput") {
                 this.getFilterGroup(paramName).selected = "";
             }
-            if (this.getFilterGroup(paramName).type == "multiselect") {
-                this.getFilterGroup(paramName).selected = [];
-            }
             if (this.getFilterGroup(paramName).type == "checkboxes") {
                 this.getFilterGroup(paramName).value = [];
-                this.getFilterGroup(paramName).categories.forEach(function (cat) {
+                this.getFilterGroup(paramName).categories.forEach((cat) => {
                     cat.selected = false;
                 });
             }
 
             this.fetchData();
         },
-        getFilterGroup: function (name) {
+        getFilterGroup(name) {
             return _.find(this.filterConfig.filterGroup, ["paramName", name]);
         },
-        gotoPage: function (page) {
+        loadMore(num) {
+            var that = this,
+                itemsToShow = this.docs.length + num;
+
+            this.docs = [];
+
+            this.allItems.forEach((item, index) => {
+                if (index < itemsToShow) {
+                    that.docs.push(item);
+                }
+            });
+        },
+        gotoPage(page) {
             console.log("Going to page " + page);
 
             this.filterConfig.currentPage = page;
@@ -284,7 +282,7 @@ var d40_assetpub = {
                 });
             }
         },
-        buildPagination: function (totalItems) {
+        buildPagination(totalItems) {
             this.pagination = [];
 
             var totalPages = Math.floor((totalItems - 1) / this.filterConfig.pageSize) + 1 <= 0 ? 1 : Math.floor((totalItems - 1) / this.filterConfig.pageSize) + 1;
@@ -322,7 +320,7 @@ var d40_assetpub = {
 
             console.log("Pagination based on " + totalItems + " items");
         },
-        firstOrLast: function (pag) {
+        firstOrLast(pag) {
             if ((this.jsonParams.pag == 1 && pag.pos == "first") || (Math.floor((this.totalItems - 1) / this.filterConfig.pageSize) + 1 == this.jsonParams.pag && pag.pos == "last")) {
                 return true;
             } else {
