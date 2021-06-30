@@ -236,32 +236,40 @@ var d40_assetpub = {
         getFilterGroup(name) {
             return _.find(this.filterConfig.filterGroup, ["paramName", name]);
         },
-        buildQueryParams() {
+        buildQueryParams(names = []) {
             var params = "";
 
-            if (this.$route.query.kw) {
-                params += "&kw=" + this.$route.query.kw;
-            }
-            if (this.$route.query.d1) {
-                params += "&d1=" + this.$route.query.d1;
-            }
-            if (this.$route.query.d2) {
-                params += "&d2=" + this.$route.query.d2;
-            }
-            if (this.$route.query.p1) {
-                params += "&p1=" + this.$route.query.p1;
-            }
-            if (this.$route.query.p2) {
-                params += "&p2=" + this.$route.query.p2;
-            }
-            if (this.$route.query.p3) {
-                params += "&p3=" + this.$route.query.p3;
-            }
-            if (this.$route.query.p4) {
-                params += "&p4=" + this.$route.query.p4;
-            }
-            if (this.$route.query.p5) {
-                params += "&p5=" + this.$route.query.p5;
+            if (names.length > 0) {
+                names.forEach((p) => {
+                    if (this.$route.query[p]) {
+                        params += "&" + p + "=" + this.$route.query[p];
+                    }
+                });
+            } else {
+                if (this.$route.query.kw) {
+                    params += "&kw=" + this.$route.query.kw;
+                }
+                if (this.$route.query.d1) {
+                    params += "&d1=" + this.$route.query.d1;
+                }
+                if (this.$route.query.d2) {
+                    params += "&d2=" + this.$route.query.d2;
+                }
+                if (this.$route.query.p1) {
+                    params += "&p1=" + this.$route.query.p1;
+                }
+                if (this.$route.query.p2) {
+                    params += "&p2=" + this.$route.query.p2;
+                }
+                if (this.$route.query.p3) {
+                    params += "&p3=" + this.$route.query.p3;
+                }
+                if (this.$route.query.p4) {
+                    params += "&p4=" + this.$route.query.p4;
+                }
+                if (this.$route.query.p5) {
+                    params += "&p5=" + this.$route.query.p5;
+                }
             }
 
             return params;
