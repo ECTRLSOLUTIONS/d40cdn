@@ -49,12 +49,29 @@ var d40_assetpub = {
                 var value = that.$route.query[fg.paramName],
                     catSelected = [];
 
+                console.log(fg.paramName + " value is ", value);
+
                 if (value) {
                     if (fg.type == "textinput" || fg.type == "dateinput") {
                         fg.value = value;
                     }
                     if (fg.type == "select") {
                         value == 0 ? (fg.selected = "") : (fg.selected = value);
+                    }
+                    if (fg.type == "multiselect") {
+                        catSelected = value.split(",");
+
+                        fg.categories.forEach((cat) => {
+                            var found = false;
+
+                            catSelected.forEach((selection) => {
+                                if (selection.trim() == cat.categoryId) {
+                                    found = true;
+                                }
+                            });
+
+                            cat.selected = found;
+                        });
                     }
                     if (fg.type == "checkboxes") {
                         catSelected = value.split(",");
@@ -103,6 +120,16 @@ var d40_assetpub = {
                 if (fg.type == "select") {
                     fg.selected.trim() == 0 ? (value = "") : (value = fg.selected.trim());
                 }
+                if (fg.type == "multiselect") {
+                    fg.selected.forEach((cat) => {
+                        if (cat.selected) {
+                            if (value.length > 0) {
+                                value += ", ";
+                            }
+                            value += cat.categoryId.trim();
+                        }
+                    });
+                }
                 if (fg.type == "checkboxes") {
                     fg.value = "";
 
@@ -132,6 +159,7 @@ var d40_assetpub = {
             rowsToSkip < 0 ? (this.skippedRowsInDocs = 0) : (this.skippedRowsInDocs = rowsToSkip);
 
             this.jsonParams.pag = this.filterConfig.currentPage;
+            this.jsonParams.num = this.filterConfig.maxDocsToFetch;
 
             if (typeof this.runBeforeFetch === "function") {
                 this.runBeforeFetch();
@@ -174,6 +202,8 @@ var d40_assetpub = {
                     }
 
                     that.loading = false;
+
+                    //that.initFilter();
                 });
         },
         applyFacets(facetedValues) {
@@ -211,6 +241,9 @@ var d40_assetpub = {
                 if (fg.type == "select" || fg.type == "textinput" || fg.type == "dateinput") {
                     fg.selected = "";
                 }
+                if (fg.type == "multiselect") {
+                    fg.selected = [];
+                }
                 if (fg.type == "checkboxes") {
                     fg.categories.forEach((cat) => {
                         cat.selected = "";
@@ -224,6 +257,9 @@ var d40_assetpub = {
             if (this.getFilterGroup(paramName).type == "select" || this.getFilterGroup(paramName).type == "textinput" || this.getFilterGroup(paramName).type == "dateinput") {
                 this.getFilterGroup(paramName).selected = "";
             }
+            if (this.getFilterGroup(paramName).type == "multiselect") {
+                this.getFilterGroup(paramName).selected = [];
+            }
             if (this.getFilterGroup(paramName).type == "checkboxes") {
                 this.getFilterGroup(paramName).value = [];
                 this.getFilterGroup(paramName).categories.forEach((cat) => {
@@ -235,56 +271,6 @@ var d40_assetpub = {
         },
         getFilterGroup(name) {
             return _.find(this.filterConfig.filterGroup, ["paramName", name]);
-        },
-        buildQueryParams(names = []) {
-            var params = "";
-
-            if (names.length > 0) {
-                names.forEach((p) => {
-                    if (this.$route.query[p]) {
-                        params += "&" + p + "=" + this.$route.query[p];
-                    }
-                });
-            } else {
-                if (this.$route.query.kw) {
-                    params += "&kw=" + this.$route.query.kw;
-                }
-                if (this.$route.query.d1) {
-                    params += "&d1=" + this.$route.query.d1;
-                }
-                if (this.$route.query.d2) {
-                    params += "&d2=" + this.$route.query.d2;
-                }
-                if (this.$route.query.p1) {
-                    params += "&p1=" + this.$route.query.p1;
-                }
-                if (this.$route.query.p2) {
-                    params += "&p2=" + this.$route.query.p2;
-                }
-                if (this.$route.query.p3) {
-                    params += "&p3=" + this.$route.query.p3;
-                }
-                if (this.$route.query.p4) {
-                    params += "&p4=" + this.$route.query.p4;
-                }
-                if (this.$route.query.p5) {
-                    params += "&p5=" + this.$route.query.p5;
-                }
-            }
-
-            return params;
-        },
-        loadMore(num) {
-            var that = this,
-                itemsToShow = this.docs.length + num;
-
-            this.docs = [];
-
-            this.allItems.forEach((item, index) => {
-                if (index < itemsToShow) {
-                    that.docs.push(item);
-                }
-            });
         },
         gotoPage(page) {
             console.log("Going to page " + page);
