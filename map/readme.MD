@@ -1,5 +1,8 @@
 ## Suggesto Map
 
+## v1.8 - 1/7/2021
+Aggiornato il punto di ancoraggio dei PIN SVG.
+
 ## v1.4
 Per non sistemare la mappa in base ai marker in automatico:
 

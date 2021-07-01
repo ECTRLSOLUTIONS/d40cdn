@@ -1,8 +1,8 @@
 
 /*
- v1.6
+ v1.8
  data: 22/04/2021
- update: 21/06/2021
+ update: 01/07/2021
 */
 function SuggestoMap(mapid) {
 	this.sm = {
@@ -139,7 +139,13 @@ function SuggestoMap(mapid) {
 				var jsonMarker = jsonData.markers[i];
 				
 				const svgIcon = L.divIcon(getSuggestoIconOptions(jsonMarker.type, jsonMarker.value, jsonMarker.size, jsonMarker['color']));
-				const aMarker = L.marker(jsonMarker.latlng, { icon: svgIcon });
+				var aMarker; 
+				if (jsonMarker.type == 'base') {
+					aMarker = L.marker(jsonMarker.latlng);
+				} else {
+					aMarker = L.marker(jsonMarker.latlng, { icon: svgIcon });
+				}
+
 				if (jsonMarker.html !== '') {
 					aMarker.bindPopup(jsonMarker.html, { maxWidth: "auto" });
 				}
