@@ -17,7 +17,7 @@ function initVueADT(portletId, namespace = "", filterConfig, mixins = [], compon
             portletId: portletId,
         },
         created() {
-            console.log("Vue ADT instance created. Access it using window." + instanceName);
+            console.warn("Vue ADT instance created. Access it using window." + instanceName);
         },
     });
 }
