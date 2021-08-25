@@ -6,22 +6,12 @@ var d40_crop = {
                 siteUrl = window.location.origin.replace("://", ".");
 
             if (image == "") {
-                if (h == "") {
-                    h = w;
-                }
-
-                image = `https://via.placeholder.com/${w}x${h}?text=Anteprima`;
+                h == "" ? (image = `https://via.placeholder.com/${w}?text=Anteprima`) : (image = `https://via.placeholder.com/${w}x${h}?text=Anteprima`);
             } else {
                 if (image.startsWith("http") || image == "/documentsundefined") {
-                    if (image == "/documentsundefined") {
-                        image = `https://via.placeholder.com/${w}x${h}?text=Anteprima`;
-                    }
+                    image == "/documentsundefined" ? (image = `https://via.placeholder.com/${w}x${h}?text=Anteprima`) : "";
                 } else {
-                    if (h == "") {
-                        prefix = imgCdn + "w_" + w + "/" + siteUrl;
-                    } else {
-                        prefix = imgCdn + "w_" + w + ",h_" + h + "/" + siteUrl;
-                    }
+                    h == "" ? (prefix = imgCdn + "w_" + w + "/" + siteUrl) : (prefix = imgCdn + "w_" + w + ",h_" + h + "/" + siteUrl);
                 }
             }
 
