@@ -181,6 +181,7 @@ var d40_assetpub = {
             var that = this;
 
             this.indicatorLoading = true;
+            this.filterConfig.currentPage = this.filterConfig.currentPage + 1;
             this.jsonParams.structureKey = this.filterConfig.structureKey;
             this.jsonParams.pag = this.filterConfig.currentPage;
             this.jsonParams.num = this.filterConfig.pageSize;
