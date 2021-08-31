@@ -6,6 +6,7 @@ var d40_assetpub = {
         skippedRowsInDocs: 0,
         jsonParams: {},
         totalItems: 0,
+        indicatorLoading: false,
     },
     created() {
         this.initFilter();
@@ -174,6 +175,97 @@ var d40_assetpub = {
                     }
 
                     that.loading = false;
+                });
+        },
+        fetchMoreData() {
+            var that = this;
+
+            this.indicatorLoading = true;
+            this.filterConfig.currentPage = this.filterConfig.currentPage + 1;
+            this.jsonParams.structureKey = this.filterConfig.structureKey;
+            this.jsonParams.pag = this.filterConfig.currentPage;
+            this.jsonParams.num = this.filterConfig.pageSize;
+            this.jsonParams.qry = this.filterConfig.qry;
+            this.jsonParams.so = this.filterConfig.so;
+            this.jsonParams.f0 = this.filterConfig.f0;
+            this.jsonParams.f1 = this.filterConfig.f1;
+            this.jsonParams.c1 = this.filterConfig.c1;
+            this.jsonParams.queryAndOperator0 = this.filterConfig.queryAndOperator0;
+            this.jsonParams.queryAndOperator1 = this.filterConfig.queryAndOperator1;
+            this.jsonParams.queryAndOperatorC1 = this.filterConfig.queryAndOperatorC1;
+            this.jsonParams.orderByColumn1 = this.filterConfig.orderByColumn1;
+            this.jsonParams.orderByColumn2 = this.filterConfig.orderByColumn2;
+            this.jsonParams.orderByType1 = this.filterConfig.orderByType1;
+            this.jsonParams.orderByType2 = this.filterConfig.orderByType2;
+
+            this.filterConfig.filterGroup.forEach((fg) => {
+                var value = "";
+
+                if (fg.type == "textinput" || fg.type == "dateinput") {
+                    value = fg.value;
+                }
+                if (fg.type == "select") {
+                    fg.selected.trim() == 0 ? (value = "") : (value = fg.selected.trim());
+                }
+                if (fg.type == "checkboxes") {
+                    fg.value = "";
+
+                    fg.categories.forEach((cat) => {
+                        if (cat.selected) {
+                            if (value.length > 0) {
+                                value += ", ";
+                            }
+                            value += cat.categoryId.trim();
+
+                            if (fg.value.length > 0) {
+                                fg.value += ", ";
+                            }
+                            fg.value += cat.label;
+                        }
+                    });
+                }
+
+                that.jsonParams[fg.paramName] = value;
+            });
+
+            if (this.filterConfig.routerEnabled) {
+                this.pushNewParams();
+            }
+
+            this.jsonParams.pag = this.filterConfig.currentPage;
+
+            if (typeof this.runBeforeFetch === "function") {
+                this.runBeforeFetch();
+            }
+
+            axios
+                .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
+                .then((res) => {
+                    console.log("Data fetched, result: ", res.data);
+
+                    if (res.data.facetedValues) {
+                        that.applyFacets(res.data.facetedValues);
+                    }
+
+                    if (res.data.docs) {
+                        that.allItems.push(...res.data.docs);
+                        that.docs.push(...res.data.docs);
+                    }
+
+                    that.totalItems = res.data.metadata.numFound;
+                })
+                .catch((err) => {
+                    console.log("Error fetching data: ", err);
+
+                    that.allItems = that.docs = [];
+                    that.totalItems = 0;
+                })
+                .finally(() => {
+                    if (typeof that.runAfterFetch === "function") {
+                        that.runAfterFetch();
+                    }
+
+                    that.indicatorLoading = false;
                 });
         },
         applyFacets(facetedValues) {

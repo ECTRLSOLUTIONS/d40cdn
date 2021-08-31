@@ -5,17 +5,13 @@ var d40_crop = {
                 imgCdn = "https://d28r45jypu6nt9.cloudfront.net/o/d40/img/",
                 siteUrl = window.location.origin.replace("://", ".");
 
-            if (imgCdn !== "") {
+            if (image == "") {
+                h == "" ? (image = `https://via.placeholder.com/${w}?text=Anteprima`) : (image = `https://via.placeholder.com/${w}x${h}?text=Anteprima`);
+            } else {
                 if (image.startsWith("http") || image == "/documentsundefined") {
-                    if (image == "/documentsundefined") {
-                        image = "https://via.placeholder.com/450x300?text=Anteprima";
-                    }
+                    image == "/documentsundefined" ? (image = `https://via.placeholder.com/${w}x${h}?text=Anteprima`) : "";
                 } else {
-                    if (typeof h === "string") {
-                        prefix = imgCdn + "w_" + w + "/" + siteUrl;
-                    } else {
-                        prefix = imgCdn + "w_" + w + ",h_" + h + "/" + siteUrl;
-                    }
+                    h == "" ? (prefix = imgCdn + "w_" + w + "/" + siteUrl) : (prefix = imgCdn + "w_" + w + ",h_" + h + "/" + siteUrl);
                 }
             }
 
