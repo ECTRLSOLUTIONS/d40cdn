@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/index-image-marker-label-interactive.html -->
+    <!-- https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/data/moliseimage.png -->
+    <!-- https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/data/cuneo.png -->
+    <title>Suggesto Interactive Map</title>
+
+
+    <!-- script src="https://kit.fontawesome.com/babc472531.js" crossorigin="anonymous"></script -->
+
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="libs/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="libs/vendor.css" crossorigin="" />
+    <!-- link rel="stylesheet" href="libs/suggestomap.css" crossorigin="" / -->
+    <!-- link rel="stylesheet" href="libs/pure-min.css"-->
+    <!--link rel="stylesheet" href="libs/grids-responsive-min.css" -->
+
+    <!-- link rel="stylesheet" href="libs/leaflet-gesture-handling.min.css"-->
+
+    <link rel="stylesheet" href="libs/leaflet.distortableimage.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <script src="libs/leaflet.js" crossorigin=""></script>
+    <script src="libs/L.Path.Drag.js" crossorigin=""></script>
+    <!-- script src="libs/leaflet-omnivore.min.js" crossorigin=""></script -->
+    <!-- script src="libs/leaflet-gesture-handling.min.js" crossorigin=""></script -->
+    <script src="libs/vendor.js"  crossorigin="anonymous"></script>
+    <script src="libs/leaflet.distortableimage.js"  crossorigin="anonymous"></script>
+
+    <link rel="icon" href="favicon.ico">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+</head>
+
+<body>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .mapsize {
+            height: 100vh;
+            width: 100%;
+        }
+
+        .padding20 {
+            padding: 20px;
+        }
+
+        /* Classe utilizzata per lo stile della label (div icon) */
+        .leaflet-div-icon {
+            background: transparent;
+            border: 0;
+            font-size: medium;
+            font-weight: 600;
+        }
+    </style>
+
+
+
+    <div class="container" id="app">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="mapsize" id="mapid1">
+
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h3>Parametri</h3>
+                
+                    <div class="form-group">
+                      <label for="imageUrl">Image URL</label>
+                      <input v-model="imageUrl" type="text" class="form-control" id="imageUrl" aria-describedby="imageUrl" placeholder="imageUrl">
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl">Label</label>
+                        <input v-model="label" type="text" class="form-control" id="label" aria-describedby="label" placeholder="label">
+                      </div>
+                      <button @click="addMarkerAndImage()" class="btn btn-primary">Reload</button>
+                
+                <hr/>
+                
+                <p>Marker LatLon: 
+                    <pre><code>{{markerLatLon}}</code></pre></p>
+               <hr/>
+                
+                <p>Label LatLon: 
+                    <pre><code>{{labelLatLon}}</code></pre></p>
+                
+                <hr/>
+                
+                <p>ImageBounds: 
+                    <pre><code>{{JSON.stringify(imageBounds, null, 2)}}</code></pre></p>
+
+                    <!-- p>ImageBounds: 
+                        <pre><code>{{JSON.stringify(imageBounds, null, 2)}}</code></pre></p -->
+                    
+            </div>
+        </div>
+    </div>
+
+    <script src="libs/suggestomap.js"></script>
+    <script src="libs/suggestointeractivemap.js"></script>
+
+</body>
+
+</html>
