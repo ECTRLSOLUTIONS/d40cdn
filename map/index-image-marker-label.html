@@ -88,8 +88,7 @@
         // Immagine Overlay
         var imageUrl = 'https://s3-eu-west-1.amazonaws.com/mkspresstage.suggesto.eu/dario/map/data/moliseimage.png';
         var imageBounds = [[42.15322, 13.91418], [41.33351, 15.16663]];
-        L.imageOverlay(imageUrl, imageBounds).addTo(sm1.sm.lmap);
-        L.imageOverlay(imageUrl, imageBounds).bringToFront();
+        L.imageOverlay(imageUrl, imageBounds).addTo(sm1.sm.lmap).bringToFront();
 
     </script>
 </body>
