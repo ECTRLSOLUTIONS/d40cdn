@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
     if (Liferay.ThemeDisplay.isSignedIn()) {
         Liferay.Service(
             "/role/get-user-roles",
@@ -7,15 +7,15 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             (res) => {
                 if (res.some((role) => role.name === "Administrator")) {
-                    console.log("user is admin");
+                    console.log("User is admin");
                 } else {
-                    console.log("user is NOT an admin");
+                    console.log("User is not an admin");
                     Vue.config.devtools = false;
                 }
             }
         );
     } else {
-        console.log("user is not signed in, so is NOT an admin");
+        console.log("User is not signed in, not an admin");
         Vue.config.devtools = false;
     }
 });
