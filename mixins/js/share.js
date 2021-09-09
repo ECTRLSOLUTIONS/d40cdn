@@ -1,6 +1,6 @@
 var d40_share = {
     methods: {
-        share: function (title, desc) {
+        share: function (title, desc, mode = "legacy") {
             if (Liferay.Browser.isMobile()) {
                 if (Liferay.Browser.isIphone() || Liferay.Browser.isChrome() || Liferay.Browser.isOpera()) {
                     var shareData = {
@@ -13,11 +13,20 @@ var d40_share = {
                         navigator.share(shareData);
                     } catch (err) {
                         console.log("Error sharing: " + err);
-                        this.legacyShare();
+
+                        if (mode == "legacy") {
+                            this.legacyShare();
+                        } else if (mode == "social") {
+                            this.socialShare(title, desc);
+                        }
                     }
                 }
             } else {
-                this.legacyShare();
+                if (mode == "legacy") {
+                    this.legacyShare();
+                } else if (mode == "social") {
+                    this.socialShare(title, desc);
+                }
             }
         },
         legacyShare: function () {
@@ -27,10 +36,26 @@ var d40_share = {
             document.body.appendChild(clip);
             clip.value = toCopy;
             clip.select();
-            document.execCommand("copy");
+            clip.setSelectionRange(0, 999999);
+
+            navigator.clipboard.writeText(clip.value);
+            //document.execCommand("copy");
             document.body.removeChild(clip);
 
             alert("Link copiato");
+        },
+        socialShare: function (title, desc, image = "") {
+            var link = "#",
+                params = "",
+                winHeight = 450,
+                winWidth = 600,
+                winTop = window.screen.height / 2 - winHeight / 2,
+                winLeft = window.screen.width / 2 - winWidth / 2,
+                params = "scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=" + winWidth + ",height=" + winHeight + ",left=" + winLeft + ",top=" + winTop;
+
+            link = "http://www.facebook.com/sharer.php?s=100&p[title]=" + encodeURIComponent(title) + "&p[summary]=" + encodeURIComponent(desc) + "&p[url]=" + window.location.href + "&p[images][0]=" + image;
+
+            window.open(link, "Facebook", params);
         },
     },
 };
