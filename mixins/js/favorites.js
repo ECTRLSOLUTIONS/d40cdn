@@ -44,12 +44,16 @@ var d40_favorites = {
         },
         saveFavorites() {
             localStorage.setItem("favorites", JSON.stringify(this.favorites));
-            console.log("favorites updated");
+            if (this.filterConfig.debugMode) {
+                console.log("favorites updated");
+            }
         },
         resetAllFavorites() {
             if (confirm("delete all favorites?")) {
                 localStorage.removeItem("favorites");
-                console.log("removed all favorites");
+                if (this.filterConfig.debugMode) {
+                    console.log("removed all favorites");
+                }
 
                 this.getFavorites();
             }

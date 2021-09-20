@@ -1,6 +1,6 @@
 var d40_share = {
     methods: {
-        isMobile: function () {
+        isMobile() {
             var res = false;
 
             (function (a) {
@@ -14,7 +14,7 @@ var d40_share = {
             })(navigator.userAgent || navigator.vendor || window.opera);
             return res;
         },
-        share: function (title, desc, mode = "legacy") {
+        share(title, desc, mode = "legacy") {
             if (this.isMobile()) {
                 var shareData = {
                     title: title,
@@ -25,7 +25,7 @@ var d40_share = {
                 try {
                     navigator.share(shareData);
                 } catch (err) {
-                    console.log("Error sharing: " + err);
+                    console.error("Error sharing: " + err);
 
                     if (mode == "legacy") {
                         this.legacyShare();
@@ -41,7 +41,7 @@ var d40_share = {
                 }
             }
         },
-        legacyShare: function () {
+        legacyShare() {
             var clip = document.createElement("input"),
                 toCopy = window.location.href;
 
@@ -51,12 +51,11 @@ var d40_share = {
             clip.setSelectionRange(0, 999999);
 
             navigator.clipboard.writeText(clip.value);
-            //document.execCommand("copy");
             document.body.removeChild(clip);
 
             alert("Link copiato");
         },
-        socialShare: function (title, desc, image = "") {
+        socialShare(title, desc, image = "") {
             var link = "#",
                 params = "",
                 winHeight = 450,

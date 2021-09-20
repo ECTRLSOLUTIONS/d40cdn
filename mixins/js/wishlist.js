@@ -3,7 +3,7 @@ var d40_wishlist = {
         wishlist: [],
     },
     methods: {
-        getWishlist: function () {
+        getWishlist() {
             var that = this;
 
             Liferay.Service(
@@ -13,20 +13,22 @@ var d40_wishlist = {
                     sessionId: String(Liferay.ThemeDisplay.getSessionId()),
                     userId: String(Liferay.ThemeDisplay.getUserId()),
                 },
-                function (res) {
-                    console.log("getWishlist response: ", res);
+                (res) => {
+                    if (that.filterConfig.debugMode) {
+                        console.log("getWishlist response: ", res);
+                    }
 
                     if (res.success) {
-                        res.data.forEach(function (elem) {
+                        res.data.forEach((elem) => {
                             that.wishlist.push(elem);
                         });
                     }
                 }
-            ).catch(function (err) {
-                console.log("Error adding to wishlist: ", err);
+            ).catch((err) => {
+                console.error("Error adding to wishlist: ", err);
             });
         },
-        setFavourite: function (elemId) {
+        setFavourite(elemId) {
             var that = this;
 
             Liferay.Service(
@@ -38,26 +40,28 @@ var d40_wishlist = {
                     itemGroupId: 11,
                     itemId: String(elemId),
                 },
-                function (res) {
-                    console.log("addToWishList response: ", res);
+                (res) => {
+                    if (that.filterConfig.debugMode) {
+                        console.log("addToWishList response: ", res);
+                    }
 
                     if (res.success) {
-                        res.data.forEach(function (elem) {
+                        res.data.forEach((elem) => {
                             if (elem.itemId == elemId) {
                                 that.wishlist.push(elem);
                             }
                         });
                     }
                 }
-            ).catch(function (err) {
+            ).catch((err) => {
                 console.error("Error adding to wishlist: ", err);
             });
         },
-        removeFavourite: function (id) {
+        removeFavourite(id) {
             var that = this,
                 elemOid = "";
 
-            this.wishlist.forEach(function (item) {
+            this.wishlist.forEach((item) => {
                 if (item.itemId == id) {
                     elemOid = item._id.$oid;
                 }
@@ -68,23 +72,25 @@ var d40_wishlist = {
                 {
                     oid: elemOid,
                 },
-                function (res) {
-                    console.log("deleteFromWishList response: ", res);
+                (res) => {
+                    if (that.filterConfig.debugMode) {
+                        console.log("deleteFromWishList response: ", res);
+                    }
 
                     if (res.success) {
-                        that.wishlist.forEach(function (item, index) {
+                        that.wishlist.forEach((item, index) => {
                             if (item._id.$oid == res.data.document) {
                                 that.wishlist.splice(index, 1);
                             }
                         });
                     }
                 }
-            ).catch(function (err) {
+            ).catch((err) => {
                 console.error("Error removing from wishlist: ", err);
             });
         },
-        isSavedItem: function (id) {
-            return this.wishlist.filter(function (doc) {
+        isSavedItem(id) {
+            return this.wishlist.filter((doc) => {
                 return doc.itemId === id;
             })[0];
         },

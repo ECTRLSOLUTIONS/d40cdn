@@ -6,17 +6,17 @@ var d40_map = {
         map: {},
     },
     methods: {
-        buildMap: function () {
+        buildMap() {
             if (!this.mapActive) {
                 var that = this;
                 this.mapActive = true;
 
-                setTimeout(function () {
+                setTimeout(() => {
                     var layers = [],
                         markers = [],
                         map = new SuggestoMap(that.namespace + "_suggesto-map");
 
-                    that.docs.forEach(function (doc) {
+                    that.docs.forEach((doc) => {
                         if (doc.contentJSON.geoRef) {
                             var marker = {
                                 group: "1",
@@ -43,7 +43,9 @@ var d40_map = {
                         layers: layers,
                     };
 
-                    console.log("mapData is: ", mapData);
+                    if (that.filterConfig.debugMode) {
+                        console.log("mapData is: ", mapData);
+                    }
 
                     map.sm.createMap(mapData);
 

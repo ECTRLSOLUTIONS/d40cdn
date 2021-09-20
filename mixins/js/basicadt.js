@@ -107,14 +107,16 @@ var d40_basicadt = {
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then((res) => {
-                    console.log("Data fetched, result: ", res.data);
+                    if (that.filterConfig.debugMode) {
+                        console.log("Data fetched, result: ", res.data);
+                    }
 
                     res.data.docs ? (that.docs = res.data.docs) : (that.docs = []);
 
                     that.totalItems = res.data.metadata.numFound;
                 })
                 .catch((err) => {
-                    console.log("Error fetching data: ", err);
+                    console.error("Error fetching data: ", err);
 
                     that.docs = [];
                     that.totalItems = 0;

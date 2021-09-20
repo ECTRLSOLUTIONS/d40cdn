@@ -1,6 +1,6 @@
 var d40_crop = {
     methods: {
-        getPrefix: function (image, w, h = "") {
+        getPrefix(image, w, h = "") {
             var prefix = "",
                 imgCdn = "https://d28r45jypu6nt9.cloudfront.net/o/d40/img/",
                 siteUrl = window.location.origin.replace("://", ".");

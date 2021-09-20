@@ -34,7 +34,9 @@ var d40_assetpub = {
         initFilter() {
             var that = this;
 
-            console.log("router: ", this.$route.query);
+            if (this.filterConfig.debugMode) {
+                console.log("router: ", this.$route.query);
+            }
 
             if (this.$route.query.num) {
                 this.filterConfig.pageSize = this.$route.query.num;
@@ -141,7 +143,10 @@ var d40_assetpub = {
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then((res) => {
-                    console.log("Data fetched, result: ", res.data);
+                    if (that.filterConfig.debugMode) {
+                        console.log("Data fetched, result: ", res.data);
+                    }
+
                     that.docs = [];
 
                     if (res.data.facetedValues) {
@@ -164,7 +169,7 @@ var d40_assetpub = {
                     that.buildPagination(that.totalItems);
                 })
                 .catch((err) => {
-                    console.log("Error fetching data: ", err);
+                    console.error("Error fetching data: ", err);
 
                     that.allItems = that.docs = [];
                     that.totalItems = 0;
@@ -241,7 +246,9 @@ var d40_assetpub = {
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then((res) => {
-                    console.log("Data fetched, result: ", res.data);
+                    if (that.filterConfig.debugMode) {
+                        console.log("Data fetched, result: ", res.data);
+                    }
 
                     if (res.data.facetedValues) {
                         that.applyFacets(res.data.facetedValues);
@@ -255,7 +262,7 @@ var d40_assetpub = {
                     that.totalItems = res.data.metadata.numFound;
                 })
                 .catch((err) => {
-                    console.log("Error fetching data: ", err);
+                    console.error("Error fetching data: ", err);
 
                     that.allItems = that.docs = [];
                     that.totalItems = 0;
@@ -269,7 +276,9 @@ var d40_assetpub = {
                 });
         },
         applyFacets(facetedValues) {
-            console.log("Applying faceted values: ", facetedValues);
+            if (this.filterConfig.debugMode) {
+                console.log("Applying faceted values: ", facetedValues);
+            }
 
             this.filterConfig.filterGroup.forEach((fg) => {
                 if (fg.type == "select" || fg.type == "checkboxes") {
@@ -379,7 +388,9 @@ var d40_assetpub = {
             });
         },
         gotoPage(page) {
-            console.log("Going to page " + page);
+            if (this.filterConfig.debugMode) {
+                console.log("Going to page " + page);
+            }
 
             this.filterConfig.currentPage = page;
 
@@ -446,7 +457,9 @@ var d40_assetpub = {
             };
             this.pagination.push(lastPage);
 
-            console.log("Pagination based on " + totalItems + " items");
+            if (this.filterConfig.debugMode) {
+                console.log("Pagination based on " + totalItems + " items");
+            }
         },
         firstOrLast(pag) {
             if ((this.jsonParams.pag == 1 && pag.pos == "first") || (Math.floor((this.totalItems - 1) / this.filterConfig.pageSize) + 1 == this.jsonParams.pag && pag.pos == "last")) {
