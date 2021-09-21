@@ -12,7 +12,7 @@ function initVueApp(portletId, namespace = "", mixins = [], components = {}) {
             instanceName: instanceName,
         },
         created() {
-            if (this.filterConfig.debugMode) {
+            if (this.debugMode) {
                 console.warn("Vue app instance created. Access it using " + instanceName + " in console.");
             }
         },
