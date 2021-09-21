@@ -57,7 +57,6 @@ var d40_share = {
         },
         socialShare(title, desc, image = "") {
             var link = "#",
-                params = "",
                 winHeight = 450,
                 winWidth = 600,
                 winTop = window.screen.height / 2 - winHeight / 2,
