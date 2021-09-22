@@ -107,7 +107,7 @@ var d40_basicadt = {
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then((res) => {
-                    if (that.filterConfig.debugMode) {
+                    if (that.filterConfig?.debugMode || that.debugMode) {
                         console.log("Data fetched, result: ", res.data);
                     }
 

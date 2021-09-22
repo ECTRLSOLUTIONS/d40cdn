@@ -14,7 +14,7 @@ var d40_wishlist = {
                     userId: String(Liferay.ThemeDisplay.getUserId()),
                 },
                 (res) => {
-                    if (that.filterConfig.debugMode) {
+                    if (that.filterConfig?.debugMode || that.debugMode) {
                         console.log("getWishlist response: ", res);
                     }
 
@@ -41,7 +41,7 @@ var d40_wishlist = {
                     itemId: String(elemId),
                 },
                 (res) => {
-                    if (that.filterConfig.debugMode) {
+                    if (that.filterConfig?.debugMode || that.debugMode) {
                         console.log("addToWishList response: ", res);
                     }
 
@@ -73,7 +73,7 @@ var d40_wishlist = {
                     oid: elemOid,
                 },
                 (res) => {
-                    if (that.filterConfig.debugMode) {
+                    if (that.filterConfig?.debugMode || that.debugMode) {
                         console.log("deleteFromWishList response: ", res);
                     }
 

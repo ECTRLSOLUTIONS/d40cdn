@@ -11,7 +11,7 @@ var d40_social = {
             axios
                 .get(this.socialEndPoint + siteName + this.socialParams)
                 .then((res) => {
-                    if (that.filterConfig.debugMode) {
+                    if (that.filterConfig?.debugMode || that.debugMode) {
                         console.log("Posts: ", res);
                     }
 

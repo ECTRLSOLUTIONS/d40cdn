@@ -34,7 +34,7 @@ var d40_assetpub = {
         initFilter() {
             var that = this;
 
-            if (this.filterConfig.debugMode) {
+            if (this.filterConfig?.debugMode || this.debugMode) {
                 console.log("router: ", this.$route.query);
             }
 
@@ -143,7 +143,7 @@ var d40_assetpub = {
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then((res) => {
-                    if (that.filterConfig.debugMode) {
+                    if (that.filterConfig?.debugMode || that.debugMode) {
                         console.log("Data fetched, result: ", res.data);
                     }
 
@@ -246,7 +246,7 @@ var d40_assetpub = {
             axios
                 .get(this.filterConfig.endPoint + JSON.stringify(this.jsonParams))
                 .then((res) => {
-                    if (that.filterConfig.debugMode) {
+                    if (that.filterConfig?.debugMode || that.debugMode) {
                         console.log("Data fetched, result: ", res.data);
                     }
 
@@ -276,7 +276,7 @@ var d40_assetpub = {
                 });
         },
         applyFacets(facetedValues) {
-            if (this.filterConfig.debugMode) {
+            if (this.filterConfig?.debugMode || this.debugMode) {
                 console.log("Applying faceted values: ", facetedValues);
             }
 
@@ -388,7 +388,7 @@ var d40_assetpub = {
             });
         },
         gotoPage(page) {
-            if (this.filterConfig.debugMode) {
+            if (this.filterConfig?.debugMode || this.debugMode) {
                 console.log("Going to page " + page);
             }
 
@@ -457,7 +457,7 @@ var d40_assetpub = {
             };
             this.pagination.push(lastPage);
 
-            if (this.filterConfig.debugMode) {
+            if (this.filterConfig?.debugMode || this.debugMode) {
                 console.log("Pagination based on " + totalItems + " items");
             }
         },
