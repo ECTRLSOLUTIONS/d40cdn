@@ -1,5 +1,15 @@
 function initVueApp(portletId, namespace = "", mixins = [], components = {}) {
-    var instanceName = "vue_" + portletId.split("INSTANCE_")[1] + "app";
+    var instanceName = "vue_";
+
+    if (portletId.includes("INSTANCE")) {
+        instanceName += portletId.split("INSTANCE_")[1] + "_app";
+    } else {
+        instanceName +=
+            new Array(1)
+                .fill()
+                .map(() => Math.random() * 10000)
+                .map((n) => n.toString(36).replace(/\./, "")) + "_app";
+    }
 
     window[instanceName] = new Vue({
         el: portletId,
