@@ -2,11 +2,11 @@
 /*
  v1.8
  data: 22/04/2021
- update: 01/07/2021
+ update: 06/10/2021
 */
 function SuggestoMap(mapid) {
 	this.sm = {
-		version: '1.6',
+		version: '1.8',
 		fitBounds: true,
 		lmap: null,
 		tileLayer: null,
