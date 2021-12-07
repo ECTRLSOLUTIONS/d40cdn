@@ -6,6 +6,7 @@ var d40_assetpub = {
         skippedRowsInDocs: 0,
         jsonParams: {},
         totalItems: 0,
+        metadata: null,
         indicatorLoading: false,
     },
     created() {
@@ -159,7 +160,9 @@ var d40_assetpub = {
                         that.allItems = [];
                     }
 
+                    that.metadata = res.data.metadata;
                     that.totalItems = res.data.metadata.numFound;
+
                     that.allItems.forEach((item, index) => {
                         if (index < that.filterConfig.pageSize) {
                             that.docs.push(item);
