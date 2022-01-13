@@ -24,6 +24,9 @@ function initVueApp(portletId, namespace = "", mixins = [], components = {}) {
         created() {
             if (this.filterConfig?.debugMode || this.debugMode) {
                 console.warn("Vue app instance created. Access it using " + instanceName + " in console.");
+            } else {
+                console["log"] = () => {};
+                console["info"] = () => {};
             }
         },
     });
