@@ -31,8 +31,30 @@ var d40_favorites = {
             this.favorites.push(newFavorite);
             this.saveFavorites();
         },
+        setYuccaFavorite(item) {
+            this.getFavorites();
+
+            var newFavorite = {
+                id: item.nativeId,
+                contentJSON: {
+                    title: item.denominazione,
+                    previewDescription: "",
+                    description: "",
+                    geoRef: ["", ""],
+                    previewPicture: "https://via.placeholder.com/500",
+                    viewUrl: item.www,
+                },
+            };
+
+            this.favorites.push(newFavorite);
+            this.saveFavorites();
+        },
         removeFavorite(item) {
             this.favorites = this.favorites.filter((obj) => obj.id !== item.id);
+            this.saveFavorites();
+        },
+        removeYuccaFavorite(item) {
+            this.favorites = this.favorites.filter((obj) => obj.id !== item.nativeId);
             this.saveFavorites();
         },
         isFavorite(itemId) {
