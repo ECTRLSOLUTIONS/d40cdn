@@ -22,10 +22,13 @@ var d40_assetpub = {
             });
         },
         pageStart() {
-            return (this.filterConfig.currentPage - 1) * Number(this.filterConfig.pageSize);
+            return (this.filterConfig.currentPage - 1) * Number(this.filterConfig.itemsPerPage);
         },
         pageEnd() {
-            return this.pageStart + Number(this.filterConfig.pageSize);
+            return this.pageStart + Number(this.filterConfig.itemsPerPage);
+        },
+        lastPage() {
+            return Math.ceil(this.allItems.length / this.filterConfig.itemsPerPage);
         },
         visibleDocs() {
             return this.allItems.slice(this.pageStart, this.pageEnd);
@@ -291,8 +294,11 @@ var d40_assetpub = {
                         });
                     } else {
                         fg.categories.forEach((cat) => {
-                            cat.counter = facetedValues[fg.paramName].values[cat.categoryId.trim()];
-                            !cat.counter ? (cat.counter = 0) : "";
+                            if (facetedValues[fg.paramName].values) {
+                                cat.counter = facetedValues[fg.paramName].values[cat.categoryId?.trim()] || 0;
+                            } else {
+                                cat.counter = 0;
+                            }
                         });
                     }
                 }
