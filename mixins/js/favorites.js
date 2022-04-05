@@ -52,12 +52,35 @@ var d40_favorites = {
 			this.favorites.push(newFavorite);
 			this.saveFavorites();
 		},
+		setADTFavorite(itemId, itemTitle, itemPreviewDescription, itemDescription, itemGeoRef, itemPreviewPicture, itemUrl) {
+			this.getFavorites();
+
+			var newFavorite = {
+				id: itemId,
+				contentJSON: {
+					title: itemTitle,
+					previewDescription: itemPreviewDescription,
+					description: itemDescription,
+					geoRef: itemGeoRef,
+					previewPicture: itemPreviewPicture,
+					viewUrl: itemUrl,
+					type: "lfr",
+				},
+			};
+
+			this.favorites.push(newFavorite);
+			this.saveFavorites();
+		},
 		removeFavorite(item) {
 			this.favorites = this.favorites.filter((obj) => obj.id !== item.id);
 			this.saveFavorites();
 		},
 		removeYuccaFavorite(item) {
 			this.favorites = this.favorites.filter((obj) => obj.id !== item.nativeId);
+			this.saveFavorites();
+		},
+		removeADTFavorite(itemId) {
+			this.favorites = this.favorites.filter((obj) => obj.id !== itemId);
 			this.saveFavorites();
 		},
 		isFavorite(itemId) {
