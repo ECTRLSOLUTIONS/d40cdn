@@ -36,7 +36,7 @@ var d40_favorites = {
 			this.getFavorites();
 
 			var newFavorite = {
-				id: item.nativeId,
+				id: item.id,
 				contentJSON: {
 					title: item.denominazione,
 					previewDescription: "",
@@ -71,15 +71,7 @@ var d40_favorites = {
 			this.favorites.push(newFavorite);
 			this.saveFavorites();
 		},
-		removeFavorite(item) {
-			this.favorites = this.favorites.filter((obj) => obj.id !== item.id);
-			this.saveFavorites();
-		},
-		removeYuccaFavorite(item) {
-			this.favorites = this.favorites.filter((obj) => obj.id !== item.nativeId);
-			this.saveFavorites();
-		},
-		removeADTFavorite(itemId) {
+		removeFavorite(itemId) {
 			this.favorites = this.favorites.filter((obj) => obj.id !== itemId);
 			this.saveFavorites();
 		},
