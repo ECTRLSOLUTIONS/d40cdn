@@ -32,11 +32,11 @@ var d40_favorites = {
 			this.favorites.push(newFavorite);
 			this.saveFavorites();
 		},
-		setYuccaFavorite(item) {
+		setYuccaFavorite(item, id) {
 			this.getFavorites();
 
 			var newFavorite = {
-				id: item.id,
+				id,
 				contentJSON: {
 					title: item.denominazione,
 					previewDescription: "",
