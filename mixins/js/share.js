@@ -19,7 +19,7 @@ var d40_share = {
                 var shareData = {
                     title: title,
                     text: desc,
-                    url: window.location.href,
+                    url: window.location.href.replaceAll("{", "%7B").replaceAll("}", "%7D")
                 };
 
                 try {
@@ -43,7 +43,7 @@ var d40_share = {
         },
         legacyShare() {
             var clip = document.createElement("input"),
-                toCopy = window.location.href;
+                toCopy = window.location.href.replaceAll("{", "%7B").replaceAll("}", "%7D")
 
             document.body.appendChild(clip);
             clip.value = toCopy;
