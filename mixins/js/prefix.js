@@ -17,5 +17,24 @@ var d40_crop = {
 
             return prefix + image;
         },
+        getKitPrefix(img, params = "") {
+            var prefix = "https://ik.imagekit.io/suggesto/",
+                image = img,
+                origin = "";
+                
+            if(img.includes("https://via.placeholder.com")){
+                return img;
+            }
+            
+            if(img.includes("?")){
+                image = img.split("?")[0];
+            }
+            
+            if(!img.includes("https://")){
+                origin = window.location.origin;
+            }
+
+            return prefix + origin + image + "?tr=" + params;
+        }
     },
 };
