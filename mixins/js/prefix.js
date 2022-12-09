@@ -30,7 +30,7 @@ var d40_crop = {
                 image = img.split("?")[0];
             }
             
-            if(!img.includes("https://")){
+            if(!img.includes("http://") && !img.includes("https://")){
                 origin = window.location.origin;
             }
 
