@@ -1,3 +1,5 @@
+// USATO SOLO DA CBF FILTRI - NON USARE PER ALTRI SITI
+
 var d40_filter = {
     router: new VueRouter({
         mode: "history",
