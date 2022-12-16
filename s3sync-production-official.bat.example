@@ -1,0 +1,23 @@
+@echo off
+setlocal
+:PROMPT
+SET /P CONFIRM=Are you sure to upload to production folder (official) (Y/[N])?
+IF /I "%CONFIRM%" NEQ "Y" GOTO END
+
+echo Uploading with official to production...
+
+set AWS_ACCESS_KEY_ID=xxxxxxx
+set AWS_SECRET_ACCESS_KEY=xxxxxxx
+set AWS_DEFAULT_REGION=xxxxxxx
+
+aws s3 sync ./mixins s3://mkspresstage.suggesto.eu/mixins
+aws s3 sync ./filters s3://mkspresstage.suggesto.eu/filters
+aws s3 sync ./components s3://mkspresstage.suggesto.eu/components
+aws s3 sync ./test s3://mkspresstage.suggesto.eu/test
+
+echo Upload finished
+
+:END
+endlocal
+
+pause
