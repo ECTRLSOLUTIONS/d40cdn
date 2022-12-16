@@ -31,7 +31,8 @@ var d40_crop = {
             }
             
             if(!img.includes("http://") && !img.includes("https://")){
-                origin = window.location.origin;
+                // origin = window.location.origin;
+                origin = "https://www-discovertrento.d40.it";
             }
 
             return prefix + origin + image + "?tr=" + params;
