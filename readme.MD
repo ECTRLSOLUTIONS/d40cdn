@@ -1,4 +1,38 @@
 # CDN  Suggesto
+creato nuovo bucket e nuovo cloudfront
+
+CDN:
+si accede via CDN da questo host:
+
+https://d3bcf9r3uredj3.cloudfront.net
+
+esempio: 
+https://d3bcf9r3uredj3.cloudfront.net/map/libs/leaflet194/leaflet.js
+
+attenzione che i commit qui vanno anche a influenzare i siti esistenti (es molise, cuneo...).
+Se si fanno modifiche pericolose meglio creare una nuova cartella.
+
+Usare lo script di sincronizzazione s3 sync aws.
+
+
+BUCKET:
+
+d40cdn
+
+utente IAM:
+
+d40cdnuser
+
+
+chiavi di accesso in keeper (d40cdn user amazon)
+
+
+
+
+
+
+
+## OLD 
 
 ## cdn amazon 
 
