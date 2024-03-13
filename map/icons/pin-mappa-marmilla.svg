@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="uuid-9d7eb20d-bdca-4eca-8c97-24d36f62cbda" data-name="Livello 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 544.77 901.65">
+  <defs>
+    <style>
+      .uuid-60237623-b495-4252-887e-7069759acdf9 {
+        fill: #daad61;
+      }
+
+      .uuid-60237623-b495-4252-887e-7069759acdf9, .uuid-73f4caaa-f848-4a90-97a5-317fdf988dd7, .uuid-29a979c9-471e-4c60-846d-bbde22e9544c {
+        fill-rule: evenodd;
+        stroke-width: 0px;
+      }
+
+      .uuid-73f4caaa-f848-4a90-97a5-317fdf988dd7 {
+        fill: #fff;
+      }
+
+      .uuid-29a979c9-471e-4c60-846d-bbde22e9544c {
+        fill: #ba9453;
+      }
+    </style>
+  </defs>
+  <g id="uuid-ee718576-70ff-4786-ae92-e4cecee29fd7" data-name="Livello 1">
+    <g>
+      <g>
+        <path class="uuid-29a979c9-471e-4c60-846d-bbde22e9544c" d="M272.39,0v901.65c-4.93,0-10.06-2.75-12.73-8.47C111.87,592.78,0,432.28,0,286.43.21,133.71,127.26,0,272.39,0Z"/>
+        <path class="uuid-60237623-b495-4252-887e-7069759acdf9" d="M544.77,286.43c0,145.85-112.9,308.64-259.66,606.75-2.67,5.5-7.8,8.47-12.73,8.47V0c145.33,0,272.39,133.71,272.39,286.43Z"/>
+      </g>
+      <path class="uuid-73f4caaa-f848-4a90-97a5-317fdf988dd7" d="M468.15,266.52c0,108.25-87.44,195.64-195.76,195.64v.24c-108.32,0-195.78-87.41-195.78-195.65s87.46-195.64,195.78-195.64v-.24c108.32,0,195.76,87.41,195.76,195.65Z"/>
+    </g>
+  </g>
+</svg>

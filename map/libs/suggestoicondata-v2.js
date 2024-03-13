@@ -1,5 +1,5 @@
 // SVG Icon Data
-// v 1.9 - 13/03/2024
+// v x.x - 13/03/2024 (test da ultimare)
 
 var SuggestoIconData = {
     "svgTxtIcon":"<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" width=\"59.73\" height=\"70.58\" viewBox=\"0 0 59.73 70.58\">\n  <defs>\n    <filter id=\"Tracciato_7495\" x=\"0\" y=\"0\" width=\"59.73\" height=\"70.58\" filterUnits=\"userSpaceOnUse\">\n      <feOffset dy=\"5\" input=\"SourceAlpha\"/>\n      <feGaussianBlur stdDeviation=\"3\" result=\"blur\"/>\n      <feFlood flood-opacity=\"0.161\"/>\n      <feComposite operator=\"in\" in2=\"blur\"/>\n      <feComposite in=\"SourceGraphic\"/>\n    </filter>\n  </defs>\n  <g id=\"Raggruppa_1068\" data-name=\"Raggruppa 1068\" transform=\"translate(-754.307 -698.358)\">\n    <g id=\"Raggruppa_197\" data-name=\"Raggruppa 197\" transform=\"translate(763.307 702.358)\">\n      <path id=\"Tracciato_7494\" data-name=\"Tracciato 7494\" d=\"M503.445,624.61a20.007,20.007,0,0,1-1.7,1.954Z\" transform=\"translate(-466.051 -591.017)\" fill=\"#fff\"/>\n      <g transform=\"matrix(1, 0, 0, 1, -9, -4)\" filter=\"url(#Tracciato_7495)\">\n        <path id=\"Tracciato_7495-2\" data-name=\"Tracciato 7495\" d=\"M473.34,579.465a20.777,20.777,0,0,1-3.974,12.249c-.117.163-.234.321-.361.478l-1.7,1.954-14.87,17.033L436.6,593.241l.2-.01a20.865,20.865,0,1,1,36.544-13.766Z\" transform=\"translate(-422.61 -554.6)\" fill=\"#fff\"/>\n      </g>\n      <path id=\"Tracciato_7496\" data-name=\"Tracciato 7496\" d=\"M505.512,623.66l-.422.483c.127-.158.244-.315.361-.478Z\" transform=\"translate(-467.696 -590.551)\" fill=\"#fff\"/>\n    </g>\n    <circle id=\"Ellisse_150\" data-name=\"Ellisse 150\" cx=\"13\" cy=\"13\" r=\"13\" transform=\"translate(770.951 710)\" fill=\"$COLOR\"/>\n    <text id=\"A\" transform=\"translate(779.951 727)\" fill=\"#fff\" font-size=\"11\" font-family=\"Montserrat-Bold, Montserrat\" font-weight=\"700\" letter-spacing=\"-0.02em\"><tspan x=\"0\" y=\"0\">$VALUE</tspan></text>\n  </g>\n</svg>\n",
@@ -44,5 +44,49 @@ function getSuggestoIconOptions(iconType, iconValue, size, color) {
         className: 'mymarker',
         html: html
     }
+    return iconOptions;
+}
+
+function getSuggestoIconOptions2(iconType, iconValue, size, color, anchor) {
+    var defcolor = '#15cceb';
+    if (iconType == 'svgTxtIcon') {
+        defcolor = '#46bf4b';
+    }
+    if (typeof(color) !== 'undefined') {
+        defcolor = color;
+    }
+    var html = "";
+    var iconAnchor = [30, 60];
+
+    if (typeof(SuggestoIconData[iconType]) !== 'undefined') {
+        html = SuggestoIconData[iconType].replace('$VALUE', iconValue);
+        html = html.replace('$COLOR', defcolor);
+        // Utilizza iconAnchor definito per il tipo di icona se non viene fornito un parametro anchor
+        if (!anchor) {
+            iconAnchor = SuggestoIconAnchor[iconType];
+        }
+    }
+    
+    // Gestisce il parametro size
+    var iconSize;
+    if (Array.isArray(size)) {
+        // Se size è un array, usa direttamente i valori
+        iconSize = size;
+    } else {
+        // Se size è un numero, crea un array [size, size]
+        iconSize = [size, size];
+    }
+
+    // Gestisce il parametro anchor, se fornito
+    if (Array.isArray(anchor)) {
+        iconAnchor = anchor;
+    }
+
+    const iconOptions = {
+        iconSize: iconSize,
+        iconAnchor: iconAnchor,
+        className: 'mymarker',
+        html: html
+    };
     return iconOptions;
 }
