@@ -31,7 +31,7 @@ var d40_crop = {
             }
             
             if(!img.includes("http://") && !img.includes("https://")){
-                // origin = window.location.origin;
+                //xxx origin = window.location.origin;
                 origin = "https://bo-discovertrento.d40.it";
             }
 
