@@ -1,0 +1,176 @@
+<!--
+   D40 newsletter
+    
+    �Suggesto 2020
+    esempio accessibile attraverso https://d3bcf9r3uredj3.cloudfront.net/smexp74/newsletter/newsletterv1.html
+-->
+
+<style>
+    .iframe-wrap{
+        width: 600px;
+        height: 400px;
+        overflow: hidden;
+    }
+
+    .modal.large{
+        z-index: 1500;
+    }
+    .modal.large .modal-dialog{
+        height: 90%;
+    }
+    .modal.large .modal-content{
+        height: 100%;
+    }
+    
+    @media screen and (max-width: 992px){
+        .modal.large .modal-dialog{
+            height: 100%;
+            max-width: 100%;
+        }
+        .modal.large .modal-content{
+            height: 100%;
+        }
+    }
+    .modal.large .modal-body{
+        max-height: 100%;
+    }
+</style>
+
+<div id="app">
+    <div class="container pt-5" v-cloak>
+    
+        <h2 class="text-dark mb-3">Gestione newsletter</h2>
+        
+        <div class="alert fade" :class="{'show': alert, 'alert-success': alertType == 'success', 'alert-danger': alertType == 'error'}" role="alert">
+            {{ alertText }}
+        </div>
+        
+        <div class="card" v-show="view == 'list'">
+            <div class="card-body">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label for="mailing-list" class="mr-3">Scegli la mailing list:</label>
+                        <select id="mailing-list" v-model="selected_mailingList" class="custom-select pointer mb-3">
+                            <option v-for="(item, index) in mailingLists" :key="index" :value="item">{{ item.name }}</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" v-for="item in headers">{{ item.text }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="row in items" :key="row.articleId" class="pointer" @click="editItem(row)">
+                            <td>{{ row.articleGroupId }}</td>
+                            <td>{{ row.articleId }}</td>
+                            <td>{{ row.title }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card" v-show="view == 'detail'">
+            <div class="card-body">
+                <div class="form-row">
+                    <div class="col-12 col-lg-6 mb-3">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <p>
+                                    <span class="font-weight-bold">Mailing list selezionata:</span>
+                                    {{ selected_mailingList.name }}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <p>
+                                    <span class="font-weight-bold">Titolo articolo selezionato:</span>
+                                    {{ selected_article.title }}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <p>
+                                    <span class="font-weight-bold">GroupId articolo selezionato:</span>
+                                    {{ selected_article.articleGroupId }}
+                                </p>
+                            </li>
+                            <li class="list-group-item">
+                                <p>
+                                    <span class="font-weight-bold">ArticleId articolo selezionato:</span>
+                                    {{ selected_article.articleId }}
+                                </p>
+                            </li>
+                        </ul>
+                        
+                        <div class="d-flex flex-column mx-auto w-75 my-3">
+                            <button class="btn btn-purple btn-block rounded-0 mb-4" data-toggle="modal" data-target="#send-newsletter">Invia newsletter</button>
+                            <button class="btn btn-purple btn-block rounded-0 mb-4" data-toggle="modal" data-target="#preview-popup">
+                                <span>Vedi anteprima</span>
+                                <i class="fa fa-external-link ml-2"></i>
+                            </button>
+                            <button class="btn btn-dark btn-block rounded-0 mb-4" @click="closeDetail()">Indietro</button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-lg-6 mb-3">
+                        <p class="text-muted text-center small">Anteprima:</p>
+                        <iframe ref="preview" class="w-100 h-100" :src="previewLink" @load="fixIframe()"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="send-newsletter" tabindex="-1" role="dialog" style="display: none">
+            <div class="modal-dialog modal-dialog-centered mx-auto" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Invio newsletter</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Sei sicuro di voler inviare questa newsletter?</p>
+                        
+                        <p><strong>Mailing list</strong>: {{ selected_mailingList.name }}</p>
+                        <p><strong>Titolo articolo</strong>: {{ selected_article.title }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annulla</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" @click="sendItem()">Invia</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal large fade" id="preview-popup" tabindex="-1" role="dialog" style="display: none">
+            <div class="modal-dialog modal-dialog-centered mx-auto position-relative" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Anteprima</h5>
+                        <button type="button" class="close" data-dismiss="modal">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe :src="previewLink" class="w-100 h-100" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- da togliere quando ci sarà il tema vero -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<!-- fine-->
+
+<script src="https://d40cdn.s3.eu-west-1.amazonaws.com/smexp74/newsletter/js/newsletterv1-controller.js"></script>
+
+
+

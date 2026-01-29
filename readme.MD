@@ -15,6 +15,11 @@ Se si fanno modifiche pericolose meglio creare una nuova cartella.
 Usare lo script di sincronizzazione s3 sync aws.
 
 
+Per accedere senza cache:
+https://d40cdn.s3.eu-west-1.amazonaws.com/
+
+esempio: https://d40cdn.s3.eu-west-1.amazonaws.com/map/libs/leaflet194/leaflet.js
+
 BUCKET:
 
 d40cdn
