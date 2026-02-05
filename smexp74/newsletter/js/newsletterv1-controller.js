@@ -31,7 +31,7 @@ var app = new Vue({
 		headers: [
 			{ text: 'articleGroupId', value: 'articleGroupId' },
 			{ text: 'articleId', value: 'articleId' },
-			{ text: 'title', value: 'title' }
+			{ text: 'title', value: 'titolo' }
 		]
 	},
 	mounted: function(){
