@@ -32,13 +32,9 @@ d40cdnuser
 chiavi di accesso in keeper (d40cdn user amazon)
 
 
-
-
-
-
-
 ## OLD 
 
+il proxy github raggiungibile da https://d2m98g73xnllun.cloudfront.net/ adesso è diventato un proxy su https://d3bcf9r3uredj3.cloudfront.net
 ## cdn amazon 
 
 ### JS ultima versione
